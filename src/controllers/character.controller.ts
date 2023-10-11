@@ -15,6 +15,8 @@ const characterBodySchema = z.object({
     abilities: z.string(),
 })
 
+const validationPipe = new ZodValidationPipe(characterBodySchema)
+
 type CharacterBodySchema = z.infer<typeof characterBodySchema>
 
 @Controller('api/character')
@@ -24,9 +26,8 @@ export class CharacterController {
 
     @Post()
     @HttpCode(201)
-    @UsePipes(new ZodValidationPipe(characterBodySchema))
     async handle(
-        @Body() body: CharacterBodySchema,
+        @Body(validationPipe) body: CharacterBodySchema,
         @CurrentUser() user: UserPayload,
         ) {
         const {name, race, group, level, attributes, abilities } = body
@@ -35,12 +36,12 @@ export class CharacterController {
         await this.prisma.character.create({
             data: {
                 userId: authorId,
-                name: 'Lucas',
-                race: 'Lucas',
-                group: 'Lucas',
-                level: 7,
-                attributes: 'Lucas',
-                abilities: 'Lucas',
+                name,
+                race,
+                group,
+                level,
+                attributes,
+                abilities,
             },
         })
     }
