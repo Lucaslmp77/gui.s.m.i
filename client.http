@@ -1,8 +1,9 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
-@idCharacter = a5c94bcb-0fd6-466b-bdcd-36a60601f50e
+@idCharacter = 2571c262-697a-4a78-b2b8-c521af9be638
+@gameRuleId = 2571c262-697a-4a78-b2b8-c521af9be638
 
-### USUÁRIO
+### user
 
 # @name create_account
 POST {{baseUrl}}/api/accounts
@@ -14,6 +15,8 @@ Content-Type: application/json
     "password": "123456"
 }
 
+###
+
 # @name authenticate
 POST {{baseUrl}}/api/sessions
 Content-Type: application/json
@@ -23,7 +26,7 @@ Content-Type: application/json
     "password": "123456"
 }
 
-### CHARACTER
+### character
 
 # @name create_character
 POST {{baseUrl}}/api/character
@@ -39,15 +42,21 @@ Authorization: Bearer {{authToken}}
     "abilities": "Precisão com Arco, Tiro Rápido"
 }
 
+###
+
 # @name find_many_characters
 GET {{baseUrl}}/api/character
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
+###
+
 # @name find_unique_character
 GET {{baseUrl}}/api/character/{{idCharacter}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+###
 
 # @name update_character
 PUT {{baseUrl}}/api/character/{{idCharacter}}
@@ -63,7 +72,54 @@ Authorization: Bearer {{authToken}}
     "abilities": "Nova Habilidade"
 }
 
+###
+
 # @name delete_character
 DELETE {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### game-rule
+
+# @name create_game_rule
+POST {{baseUrl}}/api/game-rule
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Nome da Regra",
+    "description": "Descrição da Regra"
+}
+
+###
+
+# @name find_many_game_rules
+GET {{baseUrl}}/api/game-rule
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_game_rule
+GET {{baseUrl}}/api/game-rule/{{gameRuleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_game_rule
+PUT {{baseUrl}}/api/game-rule/{{gameRuleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome da Regra",
+    "description": "Nova Descrição da Regra"
+}
+
+###
+
+# @name delete_game_rule
+DELETE {{baseUrl}}/api/game-rule/{{gameRuleId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
