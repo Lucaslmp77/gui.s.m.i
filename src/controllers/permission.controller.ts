@@ -4,27 +4,26 @@ import { z } from 'zod'
 import { ZodValidationPipe } from "src/pipes/zod-validation-pipe"
 import { AuthGuard } from "@nestjs/passport"
 
-const gameRuleBodySchema = z.object({
+const permissionBodySchema = z.object({
     name: z.string(),
     description: z.string(),
 })
 
-const validationPipe = new ZodValidationPipe(gameRuleBodySchema)
+const validationPipe = new ZodValidationPipe(permissionBodySchema)
 
-type GameRuleBodySchema = z.infer<typeof gameRuleBodySchema>
+type PermissionBodySchema = z.infer<typeof permissionBodySchema>
 
-@Controller('api/game-rule')
+@Controller('api/permission')
 @UseGuards(AuthGuard('jwt'))
-export class GameRuleController {
+export class PermissionController {
     constructor(private prisma: PrismaService) { }
 
     @Post()
     @HttpCode(201)
     async create(
-        @Body(validationPipe) body: GameRuleBodySchema
+        @Body(validationPipe) body: PermissionBodySchema
     ) {
-
-        const gameRule = await this.prisma.gameRule.create({
+        const permission = await this.prisma.permission.create({
             data: {
                 ...body,
                 rpgGame: {
@@ -35,66 +34,64 @@ export class GameRuleController {
             },
         });
 
-        return gameRule
+        return permission;
     }
 
     @Get()
     async findMany() {
-        return this.prisma.gameRule.findMany()
+        return this.prisma.permission.findMany()
     }
 
     @Get(':id')
     async findUnique(@Param('id') id: string) {
-        const gameRule = await this.prisma.gameRule.findUnique({
+        const permission = await this.prisma.permission.findUnique({
             where: { id: id },
         });
 
-        if (!gameRule) {
-            throw new NotFoundException('Regra do jogo não encontrada')
+        if (!permission) {
+            throw new NotFoundException('Permissão não encontrada')
         }
 
-        return gameRule
+        return permission
     }
 
     @Put(':id')
     async update(
         @Param('id') id: string,
-        @Body(validationPipe) body: GameRuleBodySchema
+        @Body(validationPipe) body: PermissionBodySchema
     ) {
-
-        const existingGameRule = await this.prisma.gameRule.findUnique({
+        const existingPermission = await this.prisma.permission.findUnique({
             where: { id: id },
         });
 
-        if (!existingGameRule) {
-            throw new NotFoundException('Regra do jogo não encontrada')
+        if (!existingPermission) {
+            throw new NotFoundException('Permissão não encontrada')
         }
 
-        const updatedGameRule = await this.prisma.gameRule.update({
+        const updatedPermission = await this.prisma.permission.update({
             where: { id: id },
             data: {
                 ...body,
             },
         });
 
-        return updatedGameRule
+        return updatedPermission
     }
 
     @Delete(':id')
     async delete(@Param('id') id: string) {
-
-        const existingGameRule = await this.prisma.gameRule.findUnique({
+        const existingPermission = await this.prisma.permission.findUnique({
             where: { id: id },
         });
 
-        if (!existingGameRule) {
-            throw new NotFoundException('Regra do jogo não encontrada')
+        if (!existingPermission) {
+            throw new NotFoundException('Permissão não encontrada')
         }
 
-        await this.prisma.gameRule.delete({
+        await this.prisma.permission.delete({
             where: { id: id },
         });
 
-        return { message: 'Regra do jogo excluída com sucesso' }
+        return { message: 'Permissão excluída com sucesso' }
     }
 }

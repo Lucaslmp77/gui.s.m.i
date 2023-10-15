@@ -2,6 +2,7 @@
 @authToken = {{authenticate.response.body.access_token}}
 @idCharacter = 2571c262-697a-4a78-b2b8-c521af9be638
 @gameRuleId = 2571c262-697a-4a78-b2b8-c521af9be638
+@permissionId = 2571c262-697a-4a78-b2b8-c521af9be638
 
 ### user
 
@@ -121,5 +122,50 @@ Authorization: Bearer {{authToken}}
 
 # @name delete_game_rule
 DELETE {{baseUrl}}/api/game-rule/{{gameRuleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### permission
+
+# @name create_permission
+POST {{baseUrl}}/api/permission
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Nome da Permissão",
+    "description": "Descrição da Permissão"
+}
+
+###
+
+# @name find_many_permissions
+GET {{baseUrl}}/api/permission
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_permission
+GET {{baseUrl}}/api/permission/{{permissionId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_permission
+PUT {{baseUrl}}/api/permission/{{permissionId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome da Permissão",
+    "description": "Nova Descrição da Permissão"
+}
+
+###
+
+# @name delete_permission
+DELETE {{baseUrl}}/api/permission/{{permissionId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
