@@ -13,5 +13,57 @@ model User {
   email String @unique
   password String
 
+  characters Character[]
+
   @@map("users")
+}
+
+model Character {
+  id String @id @default(uuid())
+  name String
+  race String
+  group String
+  level Int
+  attributes String
+  abilities String
+
+  userId String @map("user_id")
+  user User @relation(fields: [userId], references: [id])
+
+  rpgGameId String? @map("rpg_game_id")
+  rpgGame RpgGame? @relation(fields: [rpgGameId], references: [id])
+
+  @@map("characters")
+}
+
+model GameRule {
+  id String @id @default(uuid())
+  name String
+  description String
+
+  rpgGameId String @map("rpg_game_id")
+  rpgGame RpgGame @relation(fields: [rpgGameId], references: [id])
+
+  @@map("game_rules")
+}
+
+model Permission {
+  id String @id @default(uuid())
+  name String
+  description String
+
+  rpgGameId String @map("rpg_game_id")
+  rpgGame RpgGame @relation(fields: [rpgGameId], references: [id])
+
+  @@map("permissions")
+}
+
+model RpgGame {
+  id String @id @default(uuid())
+  
+  characters Character[]
+  gameRules GameRule[]
+  permissions Permission[]
+
+  @@map("rpg_games")
 }
