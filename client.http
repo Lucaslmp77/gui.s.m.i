@@ -1,5 +1,8 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
+@idCharacter = a5c94bcb-0fd6-466b-bdcd-36a60601f50e
+
+### USUÁRIO
 
 # @name create_account
 POST {{baseUrl}}/api/accounts
@@ -11,8 +14,6 @@ Content-Type: application/json
     "password": "123456"
 }
 
-###
-
 # @name authenticate
 POST {{baseUrl}}/api/sessions
 Content-Type: application/json
@@ -22,7 +23,7 @@ Content-Type: application/json
     "password": "123456"
 }
 
-###
+### CHARACTER
 
 # @name create_character
 POST {{baseUrl}}/api/character
@@ -37,3 +38,32 @@ Authorization: Bearer {{authToken}}
     "attributes": "força",
     "abilities": "Precisão com Arco, Tiro Rápido"
 }
+
+# @name find_many_characters
+GET {{baseUrl}}/api/character
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+# @name find_unique_character
+GET {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+# @name update_character
+PUT {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome do Personagem",
+    "race": "Nova Raça",
+    "group": "Novo Grupo",
+    "level": 10,
+    "attributes": "Nova Força",
+    "abilities": "Nova Habilidade"
+}
+
+# @name delete_character
+DELETE {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}

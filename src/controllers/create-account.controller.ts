@@ -19,7 +19,7 @@ export class CreateAccountsController {
     @Post()
     @HttpCode(201)
     @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-    async handle(@Body() body: CreateAccountBodySchema) {
+    async create(@Body() body: CreateAccountBodySchema) {
         const {name, email, password} = body
 
         const UserWithSameEmail = await this.prisma.user.findUnique({
@@ -28,7 +28,7 @@ export class CreateAccountsController {
             },
         })
         if(UserWithSameEmail) {
-            throw new ConflictException('User with same email address already exists.')
+            throw new ConflictException('Já existe um usuário com o mesmo endereço de e-mail.')
         }
 
         const hashedPassword = await hash(password, 8)
