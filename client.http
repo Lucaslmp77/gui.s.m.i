@@ -1,8 +1,9 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
-@idCharacter = 2571c262-697a-4a78-b2b8-c521af9be638
+@idCharacter = 06ee3ee3-a158-487e-bdce-d182ee605a38
 @gameRuleId = 2571c262-697a-4a78-b2b8-c521af9be638
 @permissionId = 2571c262-697a-4a78-b2b8-c521af9be638
+@rpgGameId = cee1edf7-0edf-453d-88d4-5f14d2f07bdd
 
 ### user
 
@@ -167,5 +168,50 @@ Authorization: Bearer {{authToken}}
 
 # @name delete_permission
 DELETE {{baseUrl}}/api/permission/{{permissionId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### rpg-game
+
+# @name create_rpg_game
+POST {{baseUrl}}/api/rpg-game
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Nome do Jogo de RPG",
+    "description": "Descrição do Jogo de RPG"
+}
+
+###
+
+# @name find_many_rpg_games
+GET {{baseUrl}}/api/rpg-game
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_rpg_game
+GET {{baseUrl}}/api/rpg-game/{{rpgGameId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_rpg_game
+PUT {{baseUrl}}/api/rpg-game/{{rpgGameId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome do Jogo de RPG",
+    "description": "Nova Descrição do Jogo de RPG"
+}
+
+###
+
+# @name delete_rpg_game
+DELETE {{baseUrl}}/api/rpg-game/{{rpgGameId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
