@@ -46,6 +46,9 @@ CREATE TABLE "permissions" (
 -- CreateTable
 CREATE TABLE "rpg_games" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
 
     CONSTRAINT "rpg_games_pkey" PRIMARY KEY ("id")
 );
@@ -64,3 +67,6 @@ ALTER TABLE "game_rules" ADD CONSTRAINT "game_rules_rpg_game_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "permissions" ADD CONSTRAINT "permissions_rpg_game_id_fkey" FOREIGN KEY ("rpg_game_id") REFERENCES "rpg_games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "rpg_games" ADD CONSTRAINT "rpg_games_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

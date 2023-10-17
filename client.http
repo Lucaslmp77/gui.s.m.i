@@ -1,5 +1,11 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
+@idCharacter = 06ee3ee3-a158-487e-bdce-d182ee605a38
+@gameRuleId = 2571c262-697a-4a78-b2b8-c521af9be638
+@permissionId = 2571c262-697a-4a78-b2b8-c521af9be638
+@rpgGameId = cee1edf7-0edf-453d-88d4-5f14d2f07bdd
+
+### user
 
 # @name create_account
 POST {{baseUrl}}/api/accounts
@@ -22,7 +28,7 @@ Content-Type: application/json
     "password": "123456"
 }
 
-###
+### character
 
 # @name create_character
 POST {{baseUrl}}/api/character
@@ -37,3 +43,175 @@ Authorization: Bearer {{authToken}}
     "attributes": "força",
     "abilities": "Precisão com Arco, Tiro Rápido"
 }
+
+###
+
+# @name find_many_characters
+GET {{baseUrl}}/api/character
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_character
+GET {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_character
+PUT {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome do Personagem",
+    "race": "Nova Raça",
+    "group": "Novo Grupo",
+    "level": 10,
+    "attributes": "Nova Força",
+    "abilities": "Nova Habilidade"
+}
+
+###
+
+# @name delete_character
+DELETE {{baseUrl}}/api/character/{{idCharacter}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### game-rule
+
+# @name create_game_rule
+POST {{baseUrl}}/api/game-rule
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Nome da Regra",
+    "description": "Descrição da Regra"
+}
+
+###
+
+# @name find_many_game_rules
+GET {{baseUrl}}/api/game-rule
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_game_rule
+GET {{baseUrl}}/api/game-rule/{{gameRuleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_game_rule
+PUT {{baseUrl}}/api/game-rule/{{gameRuleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome da Regra",
+    "description": "Nova Descrição da Regra"
+}
+
+###
+
+# @name delete_game_rule
+DELETE {{baseUrl}}/api/game-rule/{{gameRuleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### permission
+
+# @name create_permission
+POST {{baseUrl}}/api/permission
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Nome da Permissão",
+    "description": "Descrição da Permissão"
+}
+
+###
+
+# @name find_many_permissions
+GET {{baseUrl}}/api/permission
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_permission
+GET {{baseUrl}}/api/permission/{{permissionId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_permission
+PUT {{baseUrl}}/api/permission/{{permissionId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome da Permissão",
+    "description": "Nova Descrição da Permissão"
+}
+
+###
+
+# @name delete_permission
+DELETE {{baseUrl}}/api/permission/{{permissionId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### rpg-game
+
+# @name create_rpg_game
+POST {{baseUrl}}/api/rpg-game
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Nome do Jogo de RPG",
+    "description": "Descrição do Jogo de RPG"
+}
+
+###
+
+# @name find_many_rpg_games
+GET {{baseUrl}}/api/rpg-game
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_unique_rpg_game
+GET {{baseUrl}}/api/rpg-game/{{rpgGameId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_rpg_game
+PUT {{baseUrl}}/api/rpg-game/{{rpgGameId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Novo Nome do Jogo de RPG",
+    "description": "Nova Descrição do Jogo de RPG"
+}
+
+###
+
+# @name delete_rpg_game
+DELETE {{baseUrl}}/api/rpg-game/{{rpgGameId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
