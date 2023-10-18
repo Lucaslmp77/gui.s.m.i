@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { envSchema } from "./env";
 import { AuthModule } from "./auth/auth.module";
 import { AuthenticateModule } from "./module/authenticate/authenticate.module";
+import { UserModule } from "./module/user/user.module";
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { AuthenticateModule } from "./module/authenticate/authenticate.module";
       isGlobal: true,
     }),
     AuthModule,
+    UserModule,
     AuthenticateModule,
   ],
   controllers: [],
