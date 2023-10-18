@@ -4,7 +4,7 @@ import { CharacterController } from "./character.controller";
 import { CharacterService } from "./character.service";
 
 @Module({
-    controllers: [CharacterController],
-    providers: [PrismaService, CharacterService],
+  controllers: [CharacterController],
+  providers: [PrismaService, CharacterService],
 })
-export class CharacterModule { }
+export class CharacterModule {}

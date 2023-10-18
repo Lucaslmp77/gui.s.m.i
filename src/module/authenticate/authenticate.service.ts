@@ -6,33 +6,36 @@ import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthenticateService {
-    constructor(private prisma: PrismaService, private jwt: JwtService) { }
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService,
+  ) {}
 
-    async authenticate(data: AuthenticateDTO) {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                email: data.email,
-            },
-        });
+  async authenticate(data: AuthenticateDTO) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
 
-        if (!user) {
-            throw new UnauthorizedException(
-                "A credencial do usuário não corresponde.",
-            );
-        }
-
-        const isPasswordValid = await compare(data.password, user.password);
-
-        if (!isPasswordValid) {
-            throw new UnauthorizedException(
-                "A credencial do usuário não corresponde.",
-            );
-        }
-
-        const accessToken = this.jwt.sign({ sub: user.id });
-
-        return {
-            access_token: accessToken,
-        };
+    if (!user) {
+      throw new UnauthorizedException(
+        "A credencial do usuário não corresponde.",
+      );
     }
+
+    const isPasswordValid = await compare(data.password, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException(
+        "A credencial do usuário não corresponde.",
+      );
+    }
+
+    const accessToken = this.jwt.sign({ sub: user.id });
+
+    return {
+      access_token: accessToken,
+    };
+  }
 }

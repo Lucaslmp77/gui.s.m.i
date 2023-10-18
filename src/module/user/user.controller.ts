@@ -1,15 +1,10 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  Post,
-} from "@nestjs/common";
+import { Body, Controller, HttpCode, Post } from "@nestjs/common";
 import { UserDTO } from "./user.dto";
 import { UserService } from "./user.service";
 
 @Controller("api/accounts")
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   @Post()
   @HttpCode(201)

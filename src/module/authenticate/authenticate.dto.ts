@@ -1,4 +1,4 @@
 export type AuthenticateDTO = {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 };

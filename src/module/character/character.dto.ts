@@ -1,8 +1,8 @@
 export type CharacterDTO = {
-    name: string
-    race: string
-    group: string
-    level: number
-    attributes: string
-    abilities: string
-}
+  name: string;
+  race: string;
+  group: string;
+  level: number;
+  attributes: string;
+  abilities: string;
+};

@@ -20,14 +20,11 @@ import { CharacterService } from "./character.service";
 @Controller("api/character")
 @UseGuards(AuthGuard("jwt"))
 export class CharacterController {
-  constructor(private characterService: CharacterService) { }
+  constructor(private characterService: CharacterService) {}
 
   @Post()
   @HttpCode(201)
-  async create(
-    @Body() data: CharacterDTO,
-    @CurrentUser() user: UserPayload,
-  ) {
+  async create(@Body() data: CharacterDTO, @CurrentUser() user: UserPayload) {
     return this.characterService.create(data, user);
   }
 

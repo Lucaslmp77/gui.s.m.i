@@ -5,6 +5,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthenticateModule } from "./module/authenticate/authenticate.module";
 import { UserModule } from "./module/user/user.module";
 import { CharacterModule } from "./module/character/character.module";
+import { RpgGameModule } from "./module/rpg-game/rpg-game.module";
 
 @Module({
   imports: [
@@ -16,8 +17,9 @@ import { CharacterModule } from "./module/character/character.module";
     UserModule,
     AuthenticateModule,
     CharacterModule,
+    RpgGameModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}
