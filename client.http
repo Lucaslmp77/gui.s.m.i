@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
 @idCharacter = 06ee3ee3-a158-487e-bdce-d182ee605a38
-@gameRuleId = 2571c262-697a-4a78-b2b8-c521af9be638
+@gameRuleId = b0b788e6-df17-4fc7-9dab-9740a59e9719
 @permissionId = 2571c262-697a-4a78-b2b8-c521af9be638
 @rpgGameId = cee1edf7-0edf-453d-88d4-5f14d2f07bdd
 
@@ -90,7 +90,9 @@ Authorization: Bearer {{authToken}}
 
 {
     "name": "Nome da Regra",
-    "description": "Descrição da Regra"
+    "description": "Descrição da Regra",
+    "rpgGameId": "2eb4e010-7d8a-4472-9a1f-4eed453a92ca"
+
 }
 
 ###
@@ -116,7 +118,8 @@ Authorization: Bearer {{authToken}}
 
 {
     "name": "Novo Nome da Regra",
-    "description": "Nova Descrição da Regra"
+    "description": "Nova Descrição da Regra",
+    "rpgGameId": "2eb4e010-7d8a-4472-9a1f-4eed453a92ca"
 }
 
 ###
