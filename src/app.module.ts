@@ -4,6 +4,7 @@ import { envSchema } from "./env";
 import { AuthModule } from "./auth/auth.module";
 import { AuthenticateModule } from "./module/authenticate/authenticate.module";
 import { UserModule } from "./module/user/user.module";
+import { CharacterModule } from "./module/character/character.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from "./module/user/user.module";
     AuthModule,
     UserModule,
     AuthenticateModule,
+    CharacterModule,
   ],
   controllers: [],
   providers: [],

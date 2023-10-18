@@ -11,85 +11,45 @@ import {
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { z } from "zod";
-import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
 import { AuthGuard } from "@nestjs/passport";
 import { CurrentUser } from "src/auth/current-user-decorator";
 import { UserPayload } from "src/auth/jwt.strategy";
-
-const characterBodySchema = z.object({
-  name: z.string(),
-  race: z.string(),
-  group: z.string(),
-  level: z.number(),
-  attributes: z.string(),
-  abilities: z.string(),
-});
-
-const validationPipe = new ZodValidationPipe(characterBodySchema);
-
-type CharacterBodySchema = z.infer<typeof characterBodySchema>;
+import { CharacterDTO } from "./character.dto";
+import { CharacterService } from "./character.service";
 
 @Controller("api/character")
 @UseGuards(AuthGuard("jwt"))
 export class CharacterController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private characterService: CharacterService) { }
 
   @Post()
   @HttpCode(201)
   async create(
-    @Body(validationPipe) body: CharacterBodySchema,
+    @Body() data: CharacterDTO,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, race, group, level, attributes, abilities } = body;
-    const authorId = user.sub;
-
-    await this.prisma.character.create({
-      data: {
-        userId: authorId,
-        name,
-        race,
-        group,
-        level,
-        attributes,
-        abilities,
-      },
-    });
-
-    return { message: "Personagem criado com sucesso" };
+    return this.characterService.create(data, user);
   }
 
   @Get()
   async findAll() {
-    return this.prisma.character.findMany();
+    return this.characterService.findAll();
   }
 
   @Get(":id")
   async findUnique(@Param("id") id: string) {
-    const character = await this.prisma.character.findUnique({
-      where: { id: id },
-    });
-
-    if (!character) {
-      throw new NotFoundException("Personagem não encontrado");
-    }
-
-    return character;
+    return this.characterService.findUnique(id);
   }
 
   @Put(":id")
   async update(
     @Param("id") id: string,
-    @Body(validationPipe) body: CharacterBodySchema,
+    @Body() data: CharacterDTO,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, race, group, level, attributes, abilities } = body;
     const authorId = user.sub;
 
-    const existingCharacter = await this.prisma.character.findUnique({
-      where: { id: id },
-    });
+    const existingCharacter = await this.characterService.findUnique(id);
 
     if (!existingCharacter) {
       throw new NotFoundException("Personagem não encontrado");
@@ -101,28 +61,14 @@ export class CharacterController {
       );
     }
 
-    await this.prisma.character.update({
-      where: { id: id },
-      data: {
-        name,
-        race,
-        group,
-        level,
-        attributes,
-        abilities,
-      },
-    });
-
-    return { message: "Personagem atualizado com sucesso" };
+    return this.characterService.update(id, data, user);
   }
 
   @Delete(":id")
   async delete(@Param("id") id: string, @CurrentUser() user: UserPayload) {
     const authorId = user.sub;
 
-    const existingCharacter = await this.prisma.character.findUnique({
-      where: { id: id },
-    });
+    const existingCharacter = await this.characterService.findUnique(id);
 
     if (!existingCharacter) {
       throw new NotFoundException("Personagem não encontrado");
@@ -134,10 +80,6 @@ export class CharacterController {
       );
     }
 
-    await this.prisma.character.delete({
-      where: { id: id },
-    });
-
-    return { message: "Personagem excluído com sucesso" };
+    return this.characterService.delete(id, user);
   }
 }
