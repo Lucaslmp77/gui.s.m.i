@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
 import { PrismaService } from "./prisma/prisma.service";
 import { ConfigModule } from "@nestjs/config";
-import { CreateAccountsController } from "./controllers/create-account.controller";
+import { CreateAccountsController } from "./module/user/user.controller";
 import { envSchema } from "./env";
 import { AuthModule } from "./auth/auth.module";
-import { AuthenticateController } from "./controllers/authenticate.controller";
-import { CharacterController } from "./controllers/character.controller";
-import { GameRuleController } from "./controllers/game-rule.controller";
-import { PermissionController } from "./controllers/permission.controller";
-import { RpgGameController } from "./controllers/rpg-game.controller";
+import { AuthenticateController } from "./module/authenticate/authenticate.controller";
+import { CharacterController } from "./module/character/character.controller";
+import { GameRuleController } from "./module/game-rule/game-rule.controller";
+import { PermissionController } from "./module/permission/permission.controller";
+import { RpgGameController } from "./module/rpg-game/rpg-game.controller";
 
 @Module({
   imports: [
