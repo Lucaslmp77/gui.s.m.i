@@ -3,10 +3,13 @@ import { PrismaService } from "src/prisma/prisma.service"
 import { z } from 'zod'
 import { ZodValidationPipe } from "src/pipes/zod-validation-pipe"
 import { AuthGuard } from "@nestjs/passport"
+import { CurrentUser } from "src/auth/current-user-decorator"
+import { UserPayload } from "src/auth/jwt.strategy"
 
 const gameRuleBodySchema = z.object({
     name: z.string(),
     description: z.string(),
+    rpgGameId: z.string(),
 })
 
 const validationPipe = new ZodValidationPipe(gameRuleBodySchema)
@@ -21,19 +24,18 @@ export class GameRuleController {
     @Post()
     @HttpCode(201)
     async create(
-        @Body(validationPipe) body: GameRuleBodySchema
+        @Body(validationPipe) body: GameRuleBodySchema,
+        @CurrentUser() user: UserPayload,
     ) {
+        const { rpgGameId, name, description } = body
 
         const gameRule = await this.prisma.gameRule.create({
             data: {
-                ...body,
-                rpgGame: {
-                    connect: {
-                        id: 'ID_DO_RPG_GAME',
-                    },
-                },
+                name,
+                description,
+                rpgGameId,
             },
-        });
+        })
 
         return gameRule
     }
@@ -47,7 +49,7 @@ export class GameRuleController {
     async findUnique(@Param('id') id: string) {
         const gameRule = await this.prisma.gameRule.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!gameRule) {
             throw new NotFoundException('Regra do jogo não encontrada')
@@ -61,10 +63,11 @@ export class GameRuleController {
         @Param('id') id: string,
         @Body(validationPipe) body: GameRuleBodySchema
     ) {
+        const { rpgGameId, name, description } = body
 
         const existingGameRule = await this.prisma.gameRule.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!existingGameRule) {
             throw new NotFoundException('Regra do jogo não encontrada')
@@ -73,9 +76,11 @@ export class GameRuleController {
         const updatedGameRule = await this.prisma.gameRule.update({
             where: { id: id },
             data: {
-                ...body,
+                name,
+                description,
+                rpgGameId,
             },
-        });
+        })
 
         return updatedGameRule
     }
@@ -85,7 +90,7 @@ export class GameRuleController {
 
         const existingGameRule = await this.prisma.gameRule.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!existingGameRule) {
             throw new NotFoundException('Regra do jogo não encontrada')
@@ -93,7 +98,7 @@ export class GameRuleController {
 
         await this.prisma.gameRule.delete({
             where: { id: id },
-        });
+        })
 
         return { message: 'Regra do jogo excluída com sucesso' }
     }

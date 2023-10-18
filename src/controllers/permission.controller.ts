@@ -7,6 +7,7 @@ import { AuthGuard } from "@nestjs/passport"
 const permissionBodySchema = z.object({
     name: z.string(),
     description: z.string(),
+    rpgGameId: z.string(),
 })
 
 const validationPipe = new ZodValidationPipe(permissionBodySchema)
@@ -23,16 +24,15 @@ export class PermissionController {
     async create(
         @Body(validationPipe) body: PermissionBodySchema
     ) {
+        const { rpgGameId, name, description } = body
+
         const permission = await this.prisma.permission.create({
             data: {
-                ...body,
-                rpgGame: {
-                    connect: {
-                        id: 'ID_DO_RPG_GAME',
-                    },
-                },
+                name,
+                description,
+                rpgGameId,
             },
-        });
+        })
 
         return permission;
     }
@@ -60,9 +60,11 @@ export class PermissionController {
         @Param('id') id: string,
         @Body(validationPipe) body: PermissionBodySchema
     ) {
+        const { rpgGameId, name, description } = body
+
         const existingPermission = await this.prisma.permission.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!existingPermission) {
             throw new NotFoundException('Permissão não encontrada')
@@ -71,9 +73,11 @@ export class PermissionController {
         const updatedPermission = await this.prisma.permission.update({
             where: { id: id },
             data: {
-                ...body,
+                name,
+                description,
+                rpgGameId,
             },
-        });
+        })
 
         return updatedPermission
     }
