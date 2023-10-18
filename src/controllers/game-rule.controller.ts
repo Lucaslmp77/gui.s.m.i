@@ -35,7 +35,7 @@ export class GameRuleController {
                 description,
                 rpgGameId,
             },
-        });
+        })
 
         return gameRule
     }
@@ -49,7 +49,7 @@ export class GameRuleController {
     async findUnique(@Param('id') id: string) {
         const gameRule = await this.prisma.gameRule.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!gameRule) {
             throw new NotFoundException('Regra do jogo não encontrada')
@@ -67,7 +67,7 @@ export class GameRuleController {
 
         const existingGameRule = await this.prisma.gameRule.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!existingGameRule) {
             throw new NotFoundException('Regra do jogo não encontrada')
@@ -80,7 +80,7 @@ export class GameRuleController {
                 description,
                 rpgGameId,
             },
-        });
+        })
 
         return updatedGameRule
     }
@@ -90,7 +90,7 @@ export class GameRuleController {
 
         const existingGameRule = await this.prisma.gameRule.findUnique({
             where: { id: id },
-        });
+        })
 
         if (!existingGameRule) {
             throw new NotFoundException('Regra do jogo não encontrada')
@@ -98,7 +98,7 @@ export class GameRuleController {
 
         await this.prisma.gameRule.delete({
             where: { id: id },
-        });
+        })
 
         return { message: 'Regra do jogo excluída com sucesso' }
     }
