@@ -10,106 +10,60 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { z } from "zod";
-import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
 import { AuthGuard } from "@nestjs/passport";
-import { CurrentUser } from "src/auth/current-user-decorator";
-import { UserPayload } from "src/auth/jwt.strategy";
-
-const gameRuleBodySchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  rpgGameId: z.string(),
-});
-
-const validationPipe = new ZodValidationPipe(gameRuleBodySchema);
-
-type GameRuleBodySchema = z.infer<typeof gameRuleBodySchema>;
+import { GameRuleService } from "./game-rule.service";
+import { GameRuleDTO } from "./game-rule.dto";
 
 @Controller("api/game-rule")
 @UseGuards(AuthGuard("jwt"))
 export class GameRuleController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private gameRuleService: GameRuleService) { }
 
   @Post()
   @HttpCode(201)
   async create(
-    @Body(validationPipe) body: GameRuleBodySchema,
-    @CurrentUser() user: UserPayload,
+    @Body() data: GameRuleDTO,
   ) {
-    const { rpgGameId, name, description } = body;
-
-    const gameRule = await this.prisma.gameRule.create({
-      data: {
-        name,
-        description,
-        rpgGameId,
-      },
-    });
-
-    return gameRule;
+    return this.gameRuleService.create(data);
   }
 
   @Get()
-  async findMany() {
-    return this.prisma.gameRule.findMany();
+  async findAll() {
+    return this.gameRuleService.findAll();
   }
 
   @Get(":id")
   async findUnique(@Param("id") id: string) {
-    const gameRule = await this.prisma.gameRule.findUnique({
-      where: { id: id },
-    });
+    const gameRule = await this.gameRuleService.findUnique(id);
 
     if (!gameRule) {
       throw new NotFoundException("Regra do jogo não encontrada");
     }
-
     return gameRule;
   }
 
   @Put(":id")
   async update(
     @Param("id") id: string,
-    @Body(validationPipe) body: GameRuleBodySchema,
+    @Body() data: GameRuleDTO,
   ) {
-    const { rpgGameId, name, description } = body;
-
-    const existingGameRule = await this.prisma.gameRule.findUnique({
-      where: { id: id },
-    });
+    const existingGameRule = await this.gameRuleService.findUnique(id);
 
     if (!existingGameRule) {
       throw new NotFoundException("Regra do jogo não encontrada");
     }
 
-    const updatedGameRule = await this.prisma.gameRule.update({
-      where: { id: id },
-      data: {
-        name,
-        description,
-        rpgGameId,
-      },
-    });
-
-    return updatedGameRule;
+    return this.gameRuleService.update(id, data);
   }
 
   @Delete(":id")
   async delete(@Param("id") id: string) {
-    const existingGameRule = await this.prisma.gameRule.findUnique({
-      where: { id: id },
-    });
+    const existingGameRule = await this.gameRuleService.findUnique(id);
 
     if (!existingGameRule) {
       throw new NotFoundException("Regra do jogo não encontrada");
     }
 
-    await this.prisma.gameRule.delete({
-      where: { id: id },
-    });
-
-    return { message: "Regra do jogo excluída com sucesso" };
+    return this.gameRuleService.delete(id);
   }
 }

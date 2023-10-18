@@ -6,6 +6,7 @@ import { AuthenticateModule } from "./module/authenticate/authenticate.module";
 import { UserModule } from "./module/user/user.module";
 import { CharacterModule } from "./module/character/character.module";
 import { RpgGameModule } from "./module/rpg-game/rpg-game.module";
+import { GameRuleModule } from "./module/game-rule/game-rule.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { RpgGameModule } from "./module/rpg-game/rpg-game.module";
     AuthenticateModule,
     CharacterModule,
     RpgGameModule,
+    GameRuleModule,
   ],
   controllers: [],
   providers: [],
