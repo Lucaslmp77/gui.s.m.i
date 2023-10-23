@@ -2,7 +2,7 @@
 @authToken = {{authenticate.response.body.access_token}}
 @idCharacter = 89fa375d-3cbd-4fe5-a76f-ce8a6f3a30ec
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
-@permissionId = 6e457c34-113a-4227-b2b4-5daf351c063e
+@permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
 @rpgGameId = df573d01-c11d-4e9e-b876-9b9dd015479a
 
 ### user
@@ -184,7 +184,7 @@ Authorization: Bearer {{authToken}}
 {
     "name": "Nome da Permissão",
     "description": "Descrição da Permissão",
-    "rpgGameId": "2eb4e010-7d8a-4472-9a1f-4eed453a92ca"
+    "rpgGameId": "df573d01-c11d-4e9e-b876-9b9dd015479a"
 }
 
 ###
@@ -211,7 +211,7 @@ Authorization: Bearer {{authToken}}
 {
     "name": "Novo Nome da Permissão",
     "description": "Nova Descrição da Permissão",
-    "rpgGameId": "2eb4e010-7d8a-4472-9a1f-4eed453a92ca"
+    "rpgGameId": "df573d01-c11d-4e9e-b876-9b9dd015479a"
 }
 
 ###

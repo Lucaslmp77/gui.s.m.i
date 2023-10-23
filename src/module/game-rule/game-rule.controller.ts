@@ -17,13 +17,11 @@ import { GameRuleDTO } from "./game-rule.dto";
 @Controller("api/game-rule")
 @UseGuards(AuthGuard("jwt"))
 export class GameRuleController {
-  constructor(private gameRuleService: GameRuleService) { }
+  constructor(private gameRuleService: GameRuleService) {}
 
   @Post()
   @HttpCode(201)
-  async create(
-    @Body() data: GameRuleDTO,
-  ) {
+  async create(@Body() data: GameRuleDTO) {
     return this.gameRuleService.create(data);
   }
 
@@ -43,10 +41,7 @@ export class GameRuleController {
   }
 
   @Put(":id")
-  async update(
-    @Param("id") id: string,
-    @Body() data: GameRuleDTO,
-  ) {
+  async update(@Param("id") id: string, @Body() data: GameRuleDTO) {
     const existingGameRule = await this.gameRuleService.findUnique(id);
 
     if (!existingGameRule) {

@@ -18,14 +18,11 @@ import { RpgGameService } from "./rpg-game.service";
 @Controller("api/rpg-game")
 @UseGuards(AuthGuard("jwt"))
 export class RpgGameController {
-  constructor(private rpgGameService: RpgGameService) { }
+  constructor(private rpgGameService: RpgGameService) {}
 
   @Post()
   @HttpCode(201)
-  async create(
-    @Body() data: RpgGameDTO,
-    @CurrentUser() user: UserPayload,
-  ) {
+  async create(@Body() data: RpgGameDTO, @CurrentUser() user: UserPayload) {
     return this.rpgGameService.create(data, user);
   }
 
@@ -49,10 +46,7 @@ export class RpgGameController {
   }
 
   @Delete(":id")
-  async delete(
-    @Param("id") id: string,
-    @CurrentUser() user: UserPayload
-  ) {
+  async delete(@Param("id") id: string, @CurrentUser() user: UserPayload) {
     return this.rpgGameService.delete(id, user);
   }
 }

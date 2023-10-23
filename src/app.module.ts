@@ -7,6 +7,7 @@ import { UserModule } from "./module/user/user.module";
 import { CharacterModule } from "./module/character/character.module";
 import { RpgGameModule } from "./module/rpg-game/rpg-game.module";
 import { GameRuleModule } from "./module/game-rule/game-rule.module";
+import { PermissionModule } from "./module/permission/permission.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GameRuleModule } from "./module/game-rule/game-rule.module";
     CharacterModule,
     RpgGameModule,
     GameRuleModule,
+    PermissionModule,
   ],
   controllers: [],
   providers: [],

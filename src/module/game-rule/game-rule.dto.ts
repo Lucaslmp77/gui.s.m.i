@@ -1,5 +1,5 @@
 export type GameRuleDTO = {
-    name: string
-    description: string
-    rpgGameId: string
-}
+  name: string;
+  description: string;
+  rpgGameId: string;
+};
