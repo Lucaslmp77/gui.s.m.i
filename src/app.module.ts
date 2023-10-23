@@ -1,32 +1,29 @@
-import { Module } from '@nestjs/common'
-import { PrismaService } from './prisma/prisma.service'
-import { ConfigModule } from '@nestjs/config'
-import { CreateAccountsController } from './controllers/create-account.controller'
-import { envSchema } from './env'
-import { AuthModule } from './auth/auth.module'
-import { AuthenticateController } from './controllers/authenticate.controller'
-import { CharacterController } from './controllers/character.controller'
-import { GameRuleController } from './controllers/game-rule.controller'
-import { PermissionController } from './controllers/permission.controller'
-import { RpgGameController } from './controllers/rpg-game.controller'
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { envSchema } from "./env";
+import { AuthModule } from "./auth/auth.module";
+import { AuthenticateModule } from "./module/authenticate/authenticate.module";
+import { UserModule } from "./module/user/user.module";
+import { CharacterModule } from "./module/character/character.module";
+import { RpgGameModule } from "./module/rpg-game/rpg-game.module";
+import { GameRuleModule } from "./module/game-rule/game-rule.module";
+import { PermissionModule } from "./module/permission/permission.module";
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    validate: env => envSchema.parse(env),
-    isGlobal: true,
-  }),
-  AuthModule,
-],
-  controllers: [
-    CreateAccountsController,
-    AuthenticateController, 
-    CharacterController, 
-    GameRuleController, 
-    PermissionController,
-    RpgGameController
+  imports: [
+    ConfigModule.forRoot({
+      validate: (env) => envSchema.parse(env),
+      isGlobal: true,
+    }),
+    AuthModule,
+    UserModule,
+    AuthenticateModule,
+    CharacterModule,
+    RpgGameModule,
+    GameRuleModule,
+    PermissionModule,
   ],
-  providers: [
-    PrismaService
-  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
