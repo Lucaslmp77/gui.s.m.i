@@ -1,5 +1,8 @@
-@baseUrl = http://localhost:3333
-@authToken = {{authenticate.response.body.access_token}}
+//@authToken = {{authenticate.response.body.access_token}}
+{% request.variables.set ("baseUrl", "localhost:3333") %}
+
+{% request.variables.set ("authToken", authenticate.response.body.access_token) %}
+
 @idCharacter = 89fa375d-3cbd-4fe5-a76f-ce8a6f3a30ec
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
@@ -8,7 +11,7 @@
 ### user
 
 # @name create_account
-POST {{baseUrl}}/api/accounts
+POST /api/accounts
 Content-Type: application/json
 
 {
@@ -20,7 +23,7 @@ Content-Type: application/json
 ###
 
 # @name authenticate
-POST {{baseUrl}}/api/sessions
+POST localhost:3333/api/sessions
 Content-Type: application/json
 
 {
@@ -31,9 +34,9 @@ Content-Type: application/json
 ### character
 
 # @name create_character
-POST {{baseUrl}}/api/character
+POST localhost:3333/api/character
 Content-Type: application/json
-Authorization: Bearer {{authToken}}
+Authorization: Bearer
 
 {
     "name": "Lucas",
