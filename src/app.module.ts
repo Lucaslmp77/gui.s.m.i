@@ -8,6 +8,7 @@ import { CharacterModule } from "./module/character/character.module";
 import { RpgGameModule } from "./module/rpg-game/rpg-game.module";
 import { GameRuleModule } from "./module/game-rule/game-rule.module";
 import { PermissionModule } from "./module/permission/permission.module";
+import {SocketGateway} from "./gateway/socket.gateway";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PermissionModule } from "./module/permission/permission.module";
     RpgGameModule,
     GameRuleModule,
     PermissionModule,
+    SocketGateway
   ],
   controllers: [],
   providers: [],
