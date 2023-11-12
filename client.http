@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
+@emailUser = lucas@gmail.com
 @idCharacter = 89fa375d-3cbd-4fe5-a76f-ce8a6f3a30ec
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
@@ -16,6 +17,13 @@ Content-Type: application/json
     "email": "lucas@gmail.com",
     "password": "123456"
 }
+
+###
+
+# @name find_user_by_email
+GET {{baseUrl}}/api/accounts/{{emailUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 ###
 
