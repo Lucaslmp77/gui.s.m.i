@@ -53,6 +53,19 @@ CREATE TABLE "rpg_games" (
     CONSTRAINT "rpg_games_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "rooms" (
+    "id" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "author" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
+    "dateH" TIMESTAMP(3) NOT NULL,
+    "room" TEXT NOT NULL,
+    "rpgGame_id" TEXT NOT NULL,
+
+    CONSTRAINT "rooms_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 

@@ -73,3 +73,15 @@ model RpgGame {
 
   @@map("rpg_games")
 }
+
+model rooms {
+  id String @id @default(uuid())
+  text String
+  author String
+  authorId String
+  dateH DateTime
+  room String
+  rpgGamesId String @map("rpgGame_id")
+
+  @@map("rooms")
+}
