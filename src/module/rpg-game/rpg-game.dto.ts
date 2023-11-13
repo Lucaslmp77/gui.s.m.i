@@ -1,4 +1,4 @@
 export type RpgGameDTO = {
-  name: string;
+  room: string;
   description: string;
 };
