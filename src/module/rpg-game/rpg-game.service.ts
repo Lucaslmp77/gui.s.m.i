@@ -28,6 +28,16 @@ export class RpgGameService {
     return this.prisma.rpgGame.findMany();
   }
 
+  async findRpgByUser(userId: string) {
+    return this.prisma.rpgGame.findMany({
+      where: {
+        user: {
+          id: userId
+        }
+      }
+    });
+  }
+
   async findUnique(id: string) {
     const rpgGame = await this.prisma.rpgGame.findUnique({
       where: { id: id },

@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
+@idUser = c008f92c-baeb-472d-97ec-9bf7ec327d32
 @emailUser = lucas@gmail.com
 @idCharacter = 89fa375d-3cbd-4fe5-a76f-ce8a6f3a30ec
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
@@ -105,6 +106,13 @@ Authorization: Bearer {{authToken}}
 
 # @name find_many_rpg_games
 GET {{baseUrl}}/api/rpg-game
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_rpg_by_user
+GET {{baseUrl}}/api/rpg-game/findRpgByUser/{{idUser}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
