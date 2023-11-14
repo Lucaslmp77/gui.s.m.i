@@ -18,8 +18,8 @@ export class RpgGameService {
     return this.prisma.rpgGame.create({
       data: {
         userId: authorId,
-        name: data.room,
-        description: data.description,
+        name: data.name,
+        description: data.description
       },
     });
   }

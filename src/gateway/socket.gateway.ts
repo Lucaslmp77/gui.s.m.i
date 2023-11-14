@@ -1,6 +1,6 @@
-import {MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
 import { Server } from 'socket.io';
-
+import {TextService} from "../text/text.service";
 interface Message {
     text: string,
     author: string,
@@ -18,8 +18,8 @@ const users: RoomUser[] = []
 const message: Message[] = [];
 @WebSocketGateway()
 export class SocketGateway {
-    private connectedClients: Map<string, { username: string }> = new Map();
 
+    constructor(private readonly textService: TextService) {}
     @WebSocketServer()
     server!: Server;
 
@@ -29,14 +29,14 @@ export class SocketGateway {
         this.server.on('connect', (socket) => {
             console.log(socket.id + ' client connected');
             socket.on("mesa", data => {
-                const existingRoom = users.find(user => user.room === data.table.room);
+                const existingRoom = users.find(user => user.room === data.room);
                 users.push({
-                    username: data.table.username,
-                    room: data.table.room,
-                    description: data.table.description,
-                    socket_id: socket.id
+                    username: data.username,
+                    room: data.room,
+                    description: data.description,
+                    socket_id: data.id
                 });
-
+                console.log(users)
                 if (existingRoom) {
                     console.log("a sala existe")
                     // A sala já existe, emita uma mensagem de erro ou tome outra ação
@@ -44,7 +44,7 @@ export class SocketGateway {
                 } else {
                     console.log('sala nao existe')
                     // A sala não existe, crie a sala e adicione ao array de usuários
-                    socket.join(data.table.room);
+                    socket.join(data.room);
 
                 }
             });
@@ -62,8 +62,8 @@ export class SocketGateway {
                     dateH: new Date(),
                     room: data.room
                 });
+                this.textService.create(data)
                 this.server.emit('message', message)
-                console.log(message)
             })
 
         });
