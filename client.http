@@ -112,7 +112,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name find_rpg_by_user
-GET {{baseUrl}}/api/rpg-game/findRpgByUser/{{idUser}}
+GET {{baseUrl}}/api/rpg-game/findRpgByUser/{{idUser}}?page=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
