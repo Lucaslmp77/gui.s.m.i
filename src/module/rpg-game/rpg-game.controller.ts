@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
@@ -33,9 +34,13 @@ export class RpgGameController {
   }
 
   @Get("/findRpgByUser/:id")
-  async findRpgByUser(@Param("id") id: string) {
-    return this.rpgGameService.findRpgByUser(id);
+  async findRpgByUser(
+    @Param("id") id: string,
+    @Query('page') page?: number
+  ) {
+    return this.rpgGameService.findRpgByUser(id, page);
   }
+
 
 
   @Get(":id")

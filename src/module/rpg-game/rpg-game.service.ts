@@ -10,7 +10,7 @@ import { UserPayload } from "src/auth/jwt.strategy";
 
 @Injectable()
 export class RpgGameService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: RpgGameDTO, @CurrentUser() user: UserPayload) {
     const authorId = user.sub;
@@ -28,15 +28,21 @@ export class RpgGameService {
     return this.prisma.rpgGame.findMany();
   }
 
-  async findRpgByUser(userId: string) {
-    return this.prisma.rpgGame.findMany({
+  async findRpgByUser(userId: string, page: number = 1) {
+    const pageSize: number = 4;
+    const skip = (page - 1) * pageSize;
+
+    const rpgGames = await this.prisma.rpgGame.findMany({
       where: {
-        user: {
-          id: userId
-        }
-      }
+        userId: userId,
+      },
+      skip: skip,
+      take: pageSize,
     });
+
+    return rpgGames;
   }
+
 
   async findUnique(id: string) {
     const rpgGame = await this.prisma.rpgGame.findUnique({
