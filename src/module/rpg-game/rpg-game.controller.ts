@@ -14,11 +14,12 @@ import { CurrentUser } from "src/auth/current-user-decorator";
 import { UserPayload } from "src/auth/jwt.strategy";
 import { RpgGameDTO } from "./rpg-game.dto";
 import { RpgGameService } from "./rpg-game.service";
+import { string } from "zod";
 
 @Controller("api/rpg-game")
 @UseGuards(AuthGuard("jwt"))
 export class RpgGameController {
-  constructor(private rpgGameService: RpgGameService) {}
+  constructor(private rpgGameService: RpgGameService) { }
 
   @Post()
   @HttpCode(201)
@@ -30,6 +31,12 @@ export class RpgGameController {
   async findAll() {
     return this.rpgGameService.findAll();
   }
+
+  @Get("/findRpgByUser/:id")
+  async findRpgByUser(@Param("id") id: string) {
+    return this.rpgGameService.findRpgByUser(id);
+  }
+
 
   @Get(":id")
   async findUnique(@Param("id") id: string) {
