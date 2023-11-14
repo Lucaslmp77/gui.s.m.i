@@ -12,7 +12,7 @@ model User {
   name String
   email String @unique
   password String
-
+  texts Text[]
   characters Character[]
   rpgGame RpgGame[]
 
@@ -63,13 +63,25 @@ model RpgGame {
   id String @id @default(uuid())
   name String
   description String
-  
+
   characters Character[]
   gameRules GameRule[]
   permissions Permission[]
-
+  texts Text[]
   userId String @map("user_id")
   user User @relation(fields: [userId], references: [id])
 
   @@map("rpg_games")
+}
+
+model Text {
+  id String @id @default(uuid())
+  text String
+  author String
+  dateH String
+  userId String @map("user_id")
+  user User @relation(fields: [userId], references: [id])
+  rpgGameId String @map("rpg_game_id")
+  rpgGame RpgGame @relation(fields: [rpgGameId], references: [id])
+  @@map("texts")
 }

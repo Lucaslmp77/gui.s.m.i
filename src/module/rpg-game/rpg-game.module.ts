@@ -6,5 +6,6 @@ import { RpgGameService } from "./rpg-game.service";
 @Module({
   controllers: [RpgGameController],
   providers: [PrismaService, RpgGameService],
+  exports: [RpgGameService]
 })
 export class RpgGameModule {}

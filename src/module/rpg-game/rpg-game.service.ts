@@ -19,7 +19,7 @@ export class RpgGameService {
       data: {
         userId: authorId,
         name: data.name,
-        description: data.description,
+        description: data.description
       },
     });
   }
