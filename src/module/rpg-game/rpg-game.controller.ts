@@ -28,9 +28,11 @@ export class RpgGameController {
     return this.rpgGameService.create(data, user);
   }
 
-  @Get()
-  async findAll() {
-    return this.rpgGameService.findAll();
+  @Get("")
+  async findAll(
+      @Query('page') page?: number
+  ) {
+    return this.rpgGameService.findAll(page);
   }
 
   @Get("/findRpgByUser/:id")

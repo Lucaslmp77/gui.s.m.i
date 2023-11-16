@@ -20,15 +20,24 @@ const message: Message[] = [];
 export class SocketGateway {
 
     constructor(private readonly textService: TextService) {}
+
+
     @WebSocketServer()
     server!: Server;
 
     onModuleInit() {
         let name : string;
 
-        this.server.on('connect', (socket) => {
+        this.server.on('connection', (socket) => {
             console.log(socket.id + ' client connected');
-            socket.on("mesa", data => {
+            socket.on('join', (room) => {
+                socket.join(room)
+            })
+            socket.on('message', (data) => {
+                this.server.to(data.room).emit('message', data.data)
+                console.log(data.data, data.room)
+            })
+            /*socket.on("mesa", data => {
                 const existingRoom = users.find(user => user.room === data.room);
                 users.push({
                     username: data.username,
@@ -47,8 +56,12 @@ export class SocketGateway {
                     socket.join(data.room);
 
                 }
-            });
+            });*/
 
+           /* socket.on("join", (mesa) =>{
+                socket.join(mesa)
+
+            })
             socket.on('list', lista => {
                 console.log(lista)
                 socket.emit('message', message)
@@ -64,7 +77,7 @@ export class SocketGateway {
                 });
                 this.textService.create(data)
                 this.server.emit('message', message)
-            })
+            })*/
 
         });
 
