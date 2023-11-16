@@ -78,7 +78,7 @@ model Text {
   id String @id @default(uuid())
   text String
   author String
-  dateH String
+  dateH DateTime
   userId String @map("user_id")
   user User @relation(fields: [userId], references: [id])
   rpgGameId String @map("rpg_game_id")

@@ -58,7 +58,7 @@ CREATE TABLE "texts" (
     "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "dateH" TEXT NOT NULL,
+    "dateH" TIMESTAMP(3) NOT NULL,
     "user_id" TEXT NOT NULL,
     "rpg_game_id" TEXT NOT NULL,
 

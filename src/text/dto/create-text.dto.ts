@@ -1,7 +1,7 @@
 export class CreateTextDto {
     text!: string
     author!: string
-    authorId!: string
+    userId!: string
     dateH!: string
     rpgGameId!: string
 }
