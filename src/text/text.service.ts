@@ -1,27 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
 import {PrismaService} from "../prisma/prisma.service";
+import {CurrentUser} from "../auth/current-user-decorator";
+import {UserPayload} from "../auth/jwt.strategy";
 
 @Injectable()
 export class TextService {
 
+
   constructor(private prisma: PrismaService) {}
   create(data: CreateTextDto) {
-    console.log(data.rpgGameId)
+    console.log(data)
     return this.prisma.text.create({
       data:{
         text: data.text,
         author: data.author,
         dateH: data.dateH,
         rpgGameId: data.rpgGameId,
-        userId: data.authorId
+        userId: data.userId
       }
     });
   }
 
   findAll() {
-    return `This action returns all text`;
+    return this.prisma.text.findMany();
+  }
+
+  async findMany(id: string) {
+    const text = await this.prisma.text.findMany({
+      where: { rpgGameId: id },
+    });
+
+    if (!text) {
+      throw new NotFoundException("Personagem não encontrado");
+    }
+
+    return text;
   }
 
   findOne(id: number) {
