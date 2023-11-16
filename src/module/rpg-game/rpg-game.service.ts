@@ -25,7 +25,7 @@ export class RpgGameService {
   }
 
   async findAll(page: number = 1) {
-    const pageSize: number = 8;
+    const pageSize: number = 4;
     const skip = (page - 1) * pageSize;
     const rpgGames = await this.prisma.rpgGame.findMany({
       skip: skip,
@@ -38,7 +38,7 @@ export class RpgGameService {
   }
 
   async findRpgByUser(userId: string, page: number = 1) {
-    const pageSize: number = 8;
+    const pageSize: number = 4;
     const skip = (page - 1) * pageSize;
 
     const rpgGames = await this.prisma.rpgGame.findMany({
