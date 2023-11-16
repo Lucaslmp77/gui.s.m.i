@@ -25,17 +25,20 @@ export class RpgGameService {
   }
 
   async findAll(page: number = 1) {
-    const pageSize: number = 8;
+    const pageSize: number = 4;
     const skip = (page - 1) * pageSize;
     const rpgGames = await this.prisma.rpgGame.findMany({
       skip: skip,
       take: pageSize,
+      include: {
+        user: true
+      }
     });
     return rpgGames
   }
 
   async findRpgByUser(userId: string, page: number = 1) {
-    const pageSize: number = 8;
+    const pageSize: number = 4;
     const skip = (page - 1) * pageSize;
 
     const rpgGames = await this.prisma.rpgGame.findMany({
@@ -44,6 +47,9 @@ export class RpgGameService {
       },
       skip: skip,
       take: pageSize,
+      include: {
+        user: true
+      }
     });
 
     return rpgGames;
@@ -81,7 +87,10 @@ export class RpgGameService {
 
     return this.prisma.rpgGame.update({
       where: { id: id },
-      data,
+      data: {
+        name: data.name,
+        description: data.description
+      },
     });
   }
 
