@@ -24,8 +24,14 @@ export class RpgGameService {
     });
   }
 
-  async findAll() {
-    return this.prisma.rpgGame.findMany();
+  async findAll(page: number = 1) {
+    const pageSize: number = 8;
+    const skip = (page - 1) * pageSize;
+    const rpgGames = await this.prisma.rpgGame.findMany({
+      skip: skip,
+      take: pageSize,
+    });
+    return rpgGames
   }
 
   async findRpgByUser(userId: string, page: number = 1) {
