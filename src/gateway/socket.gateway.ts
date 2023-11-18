@@ -1,8 +1,7 @@
 import { WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import {TextService} from "../text/text.service";
-import {TextController} from "../text/text.controller";
-import {CreateTextDto} from "../text/dto/create-text.dto";
+import { startOfDay, endOfDay } from 'date-fns';
 interface Message {
     text: string,
     author: string,
@@ -11,12 +10,9 @@ interface Message {
     room: string
 }
 interface RoomUser {
-    socket_id: string,
-    username: string,
-    room: string,
-    description: string
+    socket_id: string
 }
-const users: RoomUser[] = []
+let users: RoomUser[] = []
 const message: Message[] = [];
 @WebSocketGateway()
 export class SocketGateway {
@@ -33,9 +29,18 @@ export class SocketGateway {
         this.server.on('connection', (socket) => {
             console.log(socket.id + ' client connected');
             socket.on('join', (room) => {
+                const todayStart = startOfDay(new Date());
+                const todayEnd = endOfDay(new Date());
                 socket.join(room)
-                this.textService.findMany(room).then(messages => {
-                    this.server.to(room).emit('messageHistory', messages);
+                users.push({ socket_id: socket.id });
+                this.textService.findMany({
+                    rpgGameId: room,
+                    dateH: {
+                        gte: todayStart,
+                        lte: todayEnd,
+                    },
+                }).then(messages => {
+                    socket.emit('messageHistory', messages);
                 });
             })
             socket.on('message', (data) => {
@@ -43,6 +48,15 @@ export class SocketGateway {
                 console.log(data.data, data.room)
                 this.textService.create(data.data).then(() => console.log('Dados salvos com sucesso'))
             })
+
+            socket.on('disconnect', () => {
+                console.log(`${socket.id} cliente desconectado`);
+                // Remova o usuário desconectado da lista
+                const index = users.findIndex(user => user.socket_id === socket.id);
+                if (index !== -1) {
+                    users.splice(index, 1);
+                }
+            });
 
         });
 
