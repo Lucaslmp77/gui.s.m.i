@@ -63,6 +63,14 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name find_characters_by_user
+GET {{baseUrl}}/api/character/countCharactersByUser/{{idUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+
+# @name find_characters_by_user
 GET {{baseUrl}}/api/character/findCharacterByUser/{{idUser}}?page=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
