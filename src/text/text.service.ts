@@ -1,9 +1,9 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
-import {PrismaService} from "../prisma/prisma.service";
-import {CurrentUser} from "../auth/current-user-decorator";
-import {UserPayload} from "../auth/jwt.strategy";
+import { PrismaService } from "../prisma/prisma.service";
+import { CurrentUser } from "../auth/current-user-decorator";
+import { UserPayload } from "../auth/jwt.strategy";
 
 interface TextSearchCondition {
   rpgGameId: string;
@@ -16,11 +16,11 @@ interface TextSearchCondition {
 export class TextService {
 
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   create(data: CreateTextDto) {
     console.log(data)
     return this.prisma.text.create({
-      data:{
+      data: {
         text: data.text,
         author: data.author,
         dateH: data.dateH,
@@ -36,7 +36,7 @@ export class TextService {
 
   async findMany(condition: TextSearchCondition) {
     const text = await this.prisma.text.findMany({
-      where: condition,
+      where: condition
     });
 
     if (!text) {

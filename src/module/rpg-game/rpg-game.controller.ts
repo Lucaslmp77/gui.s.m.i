@@ -15,7 +15,6 @@ import { CurrentUser } from "src/auth/current-user-decorator";
 import { UserPayload } from "src/auth/jwt.strategy";
 import { RpgGameDTO } from "./rpg-game.dto";
 import { RpgGameService } from "./rpg-game.service";
-import { string } from "zod";
 
 @Controller("api/rpg-game")
 @UseGuards(AuthGuard("jwt"))
@@ -28,9 +27,22 @@ export class RpgGameController {
     return this.rpgGameService.create(data, user);
   }
 
+  @Get("/countAllRpgGame")
+  async countAllRpgGame(
+  ) {
+    return this.rpgGameService.countAllRpgGame();
+  }
+
+  @Get("/countRpgGameByUser/:userId")
+  async countRpgGameByUser(
+    @Param("userId") userId: string,
+  ) {
+    return this.rpgGameService.countRpgGameByUser(userId);
+  }
+
   @Get("")
   async findAll(
-      @Query('page') page?: number
+    @Query('page') page?: number
   ) {
     return this.rpgGameService.findAll(page);
   }
@@ -42,8 +54,6 @@ export class RpgGameController {
   ) {
     return this.rpgGameService.findRpgByUser(id, page);
   }
-
-
 
   @Get(":id")
   async findUnique(@Param("id") id: string) {

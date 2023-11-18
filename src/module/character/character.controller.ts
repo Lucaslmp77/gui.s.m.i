@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
@@ -20,7 +21,7 @@ import { CharacterService } from "./character.service";
 @Controller("api/character")
 @UseGuards(AuthGuard("jwt"))
 export class CharacterController {
-  constructor(private characterService: CharacterService) {}
+  constructor(private characterService: CharacterService) { }
 
   @Post()
   @HttpCode(201)
@@ -31,6 +32,21 @@ export class CharacterController {
   @Get()
   async findAll() {
     return this.characterService.findAll();
+  }
+
+  @Get("/countCharactersByUser/:userId")
+  async countCharactersByUser(
+    @Param("userId") userId: string,
+  ) {
+    return this.characterService.countCharactersByUser(userId);
+  }
+
+  @Get("/findCharacterByUser/:userId")
+  async findCharacterByUser(
+    @Param("userId") userId: string,
+    @Query('page') page?: number
+  ) {
+    return this.characterService.findCharacterByUser(userId, page);
   }
 
   @Get(":id")
