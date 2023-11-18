@@ -10,7 +10,7 @@ import { UserPayload } from "src/auth/jwt.strategy";
 
 @Injectable()
 export class CharacterService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: CharacterDTO, @CurrentUser() user: UserPayload) {
     const authorId = user.sub;
@@ -28,13 +28,44 @@ export class CharacterService {
     });
   }
 
-  async findAll() {
-    return this.prisma.character.findMany();
+  async findAll(page: number = 1) {
+    const pageSize: number = 4;
+    const skip = (page - 1) * pageSize;
+
+    return this.prisma.character.findMany({
+      skip: skip,
+      take: pageSize,
+      include: {
+        user: true,
+        rpgGame: true,
+      }
+    });
+  }
+
+  async findCharacterByUser(userId: string, page: number = 1) {
+    const pageSize: number = 4;
+    const skip = (page - 1) * pageSize;
+
+    return this.prisma.character.findMany({
+      where: {
+        userId: userId,
+      },
+      skip: skip,
+      take: pageSize,
+      include: {
+        user: true,
+        rpgGame: true,
+      }
+    });
   }
 
   async findUnique(id: string) {
     const character = await this.prisma.character.findUnique({
       where: { id: id },
+      include: {
+        user: true,
+        rpgGame: true,
+      }
     });
 
     if (!character) {
@@ -53,6 +84,10 @@ export class CharacterService {
 
     const existingCharacter = await this.prisma.character.findUnique({
       where: { id: id },
+      include: {
+        user: true,
+        rpgGame: true,
+      }
     });
 
     if (!existingCharacter) {

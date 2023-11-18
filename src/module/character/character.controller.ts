@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
@@ -31,6 +32,14 @@ export class CharacterController {
   @Get()
   async findAll() {
     return this.characterService.findAll();
+  }
+
+  @Get("/findCharacterByUser/:userId")
+  async findCharacterByUser(
+    @Param("userId") userId: string,
+    @Query('page') page?: number
+  ) {
+    return this.characterService.findCharacterByUser(userId, page);
   }
 
   @Get(":id")
