@@ -45,12 +45,12 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "name": "Lucas",
-    "race": "Elfo da Floresta",
-    "group": "Mago Elemental",
+    "name": "Mãos leves",
+    "race": "Carioca",
+    "group": "Clérigo",
     "level": 7,
-    "attributes": "força",
-    "abilities": "Precisão com Arco, Tiro Rápido"
+    "attributes": "8tão",
+    "abilities": "Nenhuma"
 }
 
 ###

@@ -42,11 +42,19 @@ export class CharacterService {
     });
   }
 
+  async countCharactersByUser(userId: string) {
+    return await this.prisma.character.count({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
   async findCharacterByUser(userId: string, page: number = 1) {
-    const pageSize: number = 4;
+    const pageSize: number = 5;
     const skip = (page - 1) * pageSize;
 
-    return this.prisma.character.findMany({
+    return await this.prisma.character.findMany({
       where: {
         userId: userId,
       },
@@ -55,9 +63,10 @@ export class CharacterService {
       include: {
         user: true,
         rpgGame: true,
-      }
+      },
     });
   }
+
 
   async findUnique(id: string) {
     const character = await this.prisma.character.findUnique({
