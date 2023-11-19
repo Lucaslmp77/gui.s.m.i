@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -7,6 +8,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { RpgGameDTO } from "./rpg-game.dto";
 import { CurrentUser } from "src/auth/current-user-decorator";
 import { UserPayload } from "src/auth/jwt.strategy";
+import {PlayerDTO} from "./player.dto";
 
 @Injectable()
 export class RpgGameService {
@@ -22,6 +24,12 @@ export class RpgGameService {
         description: data.description
       },
     });
+  }
+
+  async findUnique(id: string) {
+    return this.prisma.rpgGame.findUnique({
+      where: {id: id}
+    })
   }
 
   async findAll(page: number = 1) {
@@ -55,19 +63,55 @@ export class RpgGameService {
     return rpgGames;
   }
 
-
-  async findUnique(id: string) {
+  async savePlayerInGame( rpgGameId: string, idPlayer: string, namePlayer: string): Promise<PlayerDTO> {
     const rpgGame = await this.prisma.rpgGame.findUnique({
-      where: { id: id },
+      where: { id: rpgGameId },
     });
 
     if (!rpgGame) {
-      throw new NotFoundException("Jogo de RPG não encontrado");
+      throw new Error('A sala não foi encontrada');
     }
 
-    return rpgGame;
+    const player: PlayerDTO = await this.prisma.player.create({
+      data: {
+        idPlayer,
+        namePlayer,
+        rpgGame: { connect: { id: rpgGameId } },
+      },
+      include: {
+        rpgGame: true,
+      },
+    });
+
+    return player;
   }
 
+
+  async getPlayersInGame(rpgGameId: string): Promise<PlayerDTO[]> {
+    const playersInGame = await this.prisma.player.findMany({
+      where: { rpgGameId },
+      include: {
+        rpgGame: true,
+      },
+    });
+
+    const playersDTO: PlayerDTO[] = playersInGame.map((player) => ({
+      id: player.id,
+      idPlayer: player.idPlayer,
+      namePlayer: player.namePlayer,
+      rpgGame: {
+        id: player.rpgGame.id,
+      },
+    }));
+
+    return playersDTO;
+  }
+
+  async deletePlayerFromGame(playerId: string): Promise<void> {
+    await this.prisma.player.delete({
+      where: { id: playerId },
+    });
+  }
   async update(id: string, data: RpgGameDTO, @CurrentUser() user: UserPayload) {
     const authorId = user.sub;
 
@@ -93,6 +137,26 @@ export class RpgGameService {
       },
     });
   }
+
+  async removePlayerFromGame(rpgGameId: string, userId: string): Promise<void> {
+    const isUserInGame = await this.prisma.player.findFirst({
+      where: {
+        rpgGameId,
+        idPlayer: userId,
+      },
+    });
+
+    if (!isUserInGame) {
+      throw new Error('O jogador não está na sala');
+    }
+
+    await this.prisma.player.delete({
+      where: {
+        id: isUserInGame.id,
+      },
+    });
+  }
+
 
   async delete(id: string, @CurrentUser() user: UserPayload) {
     const authorId = user.sub;

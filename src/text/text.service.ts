@@ -2,9 +2,14 @@ import {Injectable, NotFoundException} from '@nestjs/common';
 import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
 import {PrismaService} from "../prisma/prisma.service";
-import {CurrentUser} from "../auth/current-user-decorator";
-import {UserPayload} from "../auth/jwt.strategy";
 
+interface TextSearchCondition {
+  rpgGameId: string;
+  dateH?: {
+    gte: Date;
+    lte: Date;
+  };
+}
 @Injectable()
 export class TextService {
 
@@ -27,13 +32,13 @@ export class TextService {
     return this.prisma.text.findMany();
   }
 
-  async findMany(id: string) {
+  async findMany(condition: TextSearchCondition) {
     const text = await this.prisma.text.findMany({
-      where: { rpgGameId: id },
+      where: condition
     });
 
     if (!text) {
-      throw new NotFoundException("Personagem não encontrado");
+      throw new NotFoundException("mensagem não encontrado");
     }
 
     return text;

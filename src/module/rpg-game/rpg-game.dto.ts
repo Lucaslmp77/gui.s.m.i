@@ -4,5 +4,6 @@ export type RpgGameDTO = {
   userId: string,
   name: string;
   description: string;
-  user: User
+  user: User;
+  players: User[];
 };
