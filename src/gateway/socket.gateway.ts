@@ -1,64 +1,82 @@
-import { WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import {TextService} from "../text/text.service";
+import { TextService } from '../text/text.service';
 import { startOfDay, endOfDay } from 'date-fns';
+import { RpgGameService } from '../module/rpg-game/rpg-game.service';
 interface Message {
-    text: string,
-    author: string,
-    authorId: string,
-    dateH: Date,
-    room: string
+    text: string;
+    author: string;
+    authorId: string;
+    dateH: Date;
+    room: string;
 }
+
 interface RoomUser {
-    socket_id: string
+    socket_id: string;
+    name: string;
 }
-let users: RoomUser[] = []
-const message: Message[] = [];
+
 @WebSocketGateway()
 export class SocketGateway {
-
-    constructor(private readonly textService: TextService) {}
-
+    constructor(
+        private readonly textService: TextService,
+        private readonly rpgService: RpgGameService,
+    ) {}
 
     @WebSocketServer()
     server!: Server;
 
-    onModuleInit() {
-        let name : string;
+    async onModuleInit() {
+        this.server.on('connection', async (socket) => {
+            let idRoom: string;
+            let idUser: string;
 
-        this.server.on('connection', (socket) => {
             console.log(socket.id + ' client connected');
-            socket.on('join', (room) => {
+
+            socket.on('join', async (data) => {
+                const { id, socketId, name } = data;
+                idRoom = data.id;
+                idUser = socket.id;
+
+                socket.join(id);
+                await this.rpgService.savePlayerInGame(id, socket.id, data.name);
+
                 const todayStart = startOfDay(new Date());
                 const todayEnd = endOfDay(new Date());
-                socket.join(room)
-                users.push({ socket_id: socket.id });
-                this.textService.findMany({
-                    rpgGameId: room,
+
+                const messages = await this.textService.findMany({
+                    rpgGameId: id,
                     dateH: {
                         gte: todayStart,
                         lte: todayEnd,
                     },
-                }).then(messages => {
-                    socket.emit('messageHistory', messages);
                 });
-            })
-            socket.on('message', (data) => {
-                this.server.to(data.room).emit('message', data.data)
-                console.log(data.data, data.room)
-                this.textService.create(data.data).then(() => console.log('Dados salvos com sucesso'))
-            })
+                
+                socket.emit('messageHistory', messages);
 
-            socket.on('disconnect', () => {
+                const usersRoom = await this.rpgService.getPlayersInGame(id);
+                this.server.to(id).emit('userList', usersRoom);
+
+                console.log(usersRoom);
+            });
+
+            socket.on('message', (data) => {
+                this.server.to(data.room).emit('message', data.data);
+
+                this.textService.create(data.data).then(() =>
+                    console.log('Dados salvos com sucesso'),
+                );
+            });
+
+            socket.on('disconnect', async () => {
                 console.log(`${socket.id} cliente desconectado`);
-                // Remova o usuário desconectado da lista
-                const index = users.findIndex(user => user.socket_id === socket.id);
-                if (index !== -1) {
-                    users.splice(index, 1);
-                }
+                await this.rpgService.removePlayerFromGame(idRoom, idUser);
+                console.log('sala'+ idRoom)
+                const usersRoom = await this.rpgService.getPlayersInGame(idRoom);
+
+                this.server.to(idRoom).emit('userList', usersRoom);
             });
 
         });
-
     }
 }

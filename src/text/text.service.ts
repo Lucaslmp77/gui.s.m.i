@@ -1,9 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
-import { PrismaService } from "../prisma/prisma.service";
-import { CurrentUser } from "../auth/current-user-decorator";
-import { UserPayload } from "../auth/jwt.strategy";
+import {PrismaService} from "../prisma/prisma.service";
 
 interface TextSearchCondition {
   rpgGameId: string;
