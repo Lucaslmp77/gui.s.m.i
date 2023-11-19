@@ -79,7 +79,7 @@ export class CharacterService {
   }
 
   async findCharacterNpcByRpgGame(rpgGameId: string, page: number = 1) {
-    const pageSize: number = 5;
+    const pageSize: number = 10;
     const skip = (page - 1) * pageSize;
 
     return await this.prisma.character.findMany({
