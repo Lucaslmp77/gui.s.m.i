@@ -30,6 +30,7 @@ export class RpgGameService {
     return this.prisma.rpgGame.findUnique({
       where: {id: id}
     })
+  }
     
   async countAllRpgGame() {
     return await this.prisma.rpgGame.count();

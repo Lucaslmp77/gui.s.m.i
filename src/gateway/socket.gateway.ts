@@ -52,7 +52,7 @@ export class SocketGateway {
                     },
                 });
                 
-                socket.emit('messageHistory', messages);
+                socket.emit('messageHistory', messages)
 
                 const usersRoom = await this.rpgService.getPlayersInGame(id);
                 this.server.to(id).emit('userList', usersRoom);
