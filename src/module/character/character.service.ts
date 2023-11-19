@@ -24,6 +24,7 @@ export class CharacterService {
         level: data.level,
         attributes: data.attributes,
         abilities: data.abilities,
+        npc: data.npc
       },
     });
   }
@@ -46,6 +47,7 @@ export class CharacterService {
     return await this.prisma.character.count({
       where: {
         userId: userId,
+        npc: false
       },
     });
   }
@@ -57,6 +59,34 @@ export class CharacterService {
     return await this.prisma.character.findMany({
       where: {
         userId: userId,
+        npc: false
+      },
+      skip: skip,
+      take: pageSize,
+      include: {
+        user: true,
+        rpgGame: true,
+      },
+    });
+  }
+
+  async countCharactersNpcByRpgGame(rpgGameId: string) {
+    return await this.prisma.character.count({
+      where: {
+        rpgGameId: rpgGameId,
+        npc: true
+      },
+    });
+  }
+
+  async findCharacterNpcByRpgGame(rpgGameId: string, page: number = 1) {
+    const pageSize: number = 10;
+    const skip = (page - 1) * pageSize;
+
+    return await this.prisma.character.findMany({
+      where: {
+        rpgGameId: rpgGameId,
+        npc: true
       },
       skip: skip,
       take: pageSize,

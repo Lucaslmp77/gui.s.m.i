@@ -17,6 +17,7 @@ CREATE TABLE "characters" (
     "level" INTEGER NOT NULL,
     "attributes" TEXT NOT NULL,
     "abilities" TEXT NOT NULL,
+    "npc" BOOLEAN NOT NULL,
     "user_id" TEXT NOT NULL,
     "rpg_game_id" TEXT,
 
