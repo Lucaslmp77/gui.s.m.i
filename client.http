@@ -1,11 +1,11 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
-@idUser = c008f92c-baeb-472d-97ec-9bf7ec327d32
+@idUser = 81635b84-64d2-4f9a-98a8-4bb3ebb9d04f
 @emailUser = lucas@gmail.com
-@idCharacter = 89fa375d-3cbd-4fe5-a76f-ce8a6f3a30ec
+@idCharacter = 9beeca76-6c1f-4c8a-bbcf-794c68514fc0
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
-@rpgGameId = 00783106-3fc0-4367-b234-6c43141768ce
+@rpgGameId = 0b67b848-f5f6-486e-a75f-c93f8c99fe8a
 
 ### user
 
@@ -14,8 +14,8 @@ POST {{baseUrl}}/api/accounts
 Content-Type: application/json
 
 {
-    "name": "lucas",
-    "email": "lucas@gmail.com",
+    "name": "deregues",
+    "email": "deregues@gmail.com",
     "password": "123456"
 }
 
@@ -33,7 +33,7 @@ POST {{baseUrl}}/api/sessions
 Content-Type: application/json
 
 {
-    "email": "lucas@gmail.com",
+    "email": "deregues@gmail.com",
     "password": "123456"
 }
 
@@ -45,18 +45,40 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "name": "Lucas",
-    "race": "Elfo da Floresta",
-    "group": "Mago Elemental",
+    "name": "Mãos leves",
+    "race": "Carioca",
+    "group": "Clérigo",
     "level": 7,
-    "attributes": "força",
-    "abilities": "Precisão com Arco, Tiro Rápido"
+    "attributes": "8tão",
+    "abilities": "Nenhuma",
+    "npc": true
 }
 
 ###
 
 # @name find_many_characters
 GET {{baseUrl}}/api/character
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_characters_by_user
+GET {{baseUrl}}/api/character/countCharactersByUser/{{idUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_characters_by_user
+GET {{baseUrl}}/api/character/countCharactersByUser/{{idUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_characters_npc_by_rpg_game
+GET {{baseUrl}}/api/character/findCharacterNpcByRpgGame/{{rpgGameId}}?page=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

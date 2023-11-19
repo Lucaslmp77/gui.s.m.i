@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
 import {PrismaService} from "../prisma/prisma.service";
@@ -14,11 +14,11 @@ interface TextSearchCondition {
 export class TextService {
 
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   create(data: CreateTextDto) {
     console.log(data)
     return this.prisma.text.create({
-      data:{
+      data: {
         text: data.text,
         author: data.author,
         dateH: data.dateH,

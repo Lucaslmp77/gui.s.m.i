@@ -3,7 +3,6 @@ import { Server } from 'socket.io';
 import { TextService } from '../text/text.service';
 import { startOfDay, endOfDay } from 'date-fns';
 import { RpgGameService } from '../module/rpg-game/rpg-game.service';
-
 interface Message {
     text: string;
     author: string;
@@ -52,7 +51,7 @@ export class SocketGateway {
                         lte: todayEnd,
                     },
                 });
-
+                
                 socket.emit('messageHistory', messages);
 
                 const usersRoom = await this.rpgService.getPlayersInGame(id);

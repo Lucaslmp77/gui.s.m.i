@@ -10,7 +10,7 @@ import { UserPayload } from "src/auth/jwt.strategy";
 
 @Injectable()
 export class CharacterService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: CharacterDTO, @CurrentUser() user: UserPayload) {
     const authorId = user.sub;
@@ -24,17 +24,87 @@ export class CharacterService {
         level: data.level,
         attributes: data.attributes,
         abilities: data.abilities,
+        npc: data.npc
       },
     });
   }
 
-  async findAll() {
-    return this.prisma.character.findMany();
+  async findAll(page: number = 1) {
+    const pageSize: number = 4;
+    const skip = (page - 1) * pageSize;
+
+    return this.prisma.character.findMany({
+      skip: skip,
+      take: pageSize,
+      include: {
+        user: true,
+        rpgGame: true,
+      }
+    });
   }
+
+  async countCharactersByUser(userId: string) {
+    return await this.prisma.character.count({
+      where: {
+        userId: userId,
+        npc: false
+      },
+    });
+  }
+
+  async findCharacterByUser(userId: string, page: number = 1) {
+    const pageSize: number = 5;
+    const skip = (page - 1) * pageSize;
+
+    return await this.prisma.character.findMany({
+      where: {
+        userId: userId,
+        npc: false
+      },
+      skip: skip,
+      take: pageSize,
+      include: {
+        user: true,
+        rpgGame: true,
+      },
+    });
+  }
+
+  async countCharactersNpcByRpgGame(rpgGameId: string) {
+    return await this.prisma.character.count({
+      where: {
+        rpgGameId: rpgGameId,
+        npc: true
+      },
+    });
+  }
+
+  async findCharacterNpcByRpgGame(rpgGameId: string, page: number = 1) {
+    const pageSize: number = 10;
+    const skip = (page - 1) * pageSize;
+
+    return await this.prisma.character.findMany({
+      where: {
+        rpgGameId: rpgGameId,
+        npc: true
+      },
+      skip: skip,
+      take: pageSize,
+      include: {
+        user: true,
+        rpgGame: true,
+      },
+    });
+  }
+
 
   async findUnique(id: string) {
     const character = await this.prisma.character.findUnique({
       where: { id: id },
+      include: {
+        user: true,
+        rpgGame: true,
+      }
     });
 
     if (!character) {
@@ -53,6 +123,10 @@ export class CharacterService {
 
     const existingCharacter = await this.prisma.character.findUnique({
       where: { id: id },
+      include: {
+        user: true,
+        rpgGame: true,
+      }
     });
 
     if (!existingCharacter) {
