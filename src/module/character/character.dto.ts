@@ -5,4 +5,5 @@ export type CharacterDTO = {
   level: number;
   attributes: string;
   abilities: string;
+  npc: boolean;
 };

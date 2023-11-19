@@ -49,6 +49,21 @@ export class CharacterController {
     return this.characterService.findCharacterByUser(userId, page);
   }
 
+  @Get("/countCharactersNpcByRpgGame/:rpgGameId")
+  async countCharactersNpcByRpgGame(
+    @Param("rpgGameId") rpgGameId: string,
+  ) {
+    return this.characterService.countCharactersNpcByRpgGame(rpgGameId);
+  }
+
+  @Get("/findCharacterNpcByRpgGame/:rpgGameId")
+  async findCharacterNpcByRpgGame(
+    @Param("rpgGameId") rpgGameId: string,
+    @Query('page') page?: number
+  ) {
+    return this.characterService.findCharacterNpcByRpgGame(rpgGameId, page);
+  }
+
   @Get(":id")
   async findUnique(@Param("id") id: string) {
     return this.characterService.findUnique(id);

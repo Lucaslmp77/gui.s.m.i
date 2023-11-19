@@ -5,7 +5,7 @@
 @idCharacter = 9beeca76-6c1f-4c8a-bbcf-794c68514fc0
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
-@rpgGameId = 00783106-3fc0-4367-b234-6c43141768ce
+@rpgGameId = 0b67b848-f5f6-486e-a75f-c93f8c99fe8a
 
 ### user
 
@@ -50,7 +50,8 @@ Authorization: Bearer {{authToken}}
     "group": "Clérigo",
     "level": 7,
     "attributes": "8tão",
-    "abilities": "Nenhuma"
+    "abilities": "Nenhuma",
+    "npc": true
 }
 
 ###
@@ -67,11 +68,17 @@ GET {{baseUrl}}/api/character/countCharactersByUser/{{idUser}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-
 ###
 
 # @name find_characters_by_user
-GET {{baseUrl}}/api/character/findCharacterByUser/{{idUser}}?page=1
+GET {{baseUrl}}/api/character/countCharactersByUser/{{idUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name find_characters_npc_by_rpg_game
+GET {{baseUrl}}/api/character/findCharacterNpcByRpgGame/{{rpgGameId}}?page=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
