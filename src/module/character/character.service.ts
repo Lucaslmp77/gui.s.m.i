@@ -47,6 +47,7 @@ export class CharacterService {
     return await this.prisma.character.count({
       where: {
         userId: userId,
+        npc: false
       },
     });
   }
