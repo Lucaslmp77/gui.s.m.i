@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { compare, hash } from "bcryptjs";
 import { OtpDTO } from "./otp.dto";
+import { UserService } from "../user/user.service";
 const nodemailer = require("nodemailer");
 
 @Injectable()
@@ -183,6 +184,15 @@ export class OtpService {
             if (!validOtp) {
                 throw Error("Invalid code passed. Check your inbox")
             }
+
+            await this.prisma.user.update({
+                where: {
+                    email: email,
+                },
+                data: {
+                    verified: true,
+                },
+            });
 
             return await this.deleteOtp(email);
 

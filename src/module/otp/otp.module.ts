@@ -7,4 +7,4 @@ import { OtpService } from "./otp.service";
   controllers: [OtpController],
   providers: [PrismaService, OtpService],
 })
-export class OtpModule {}
+export class OtpModule { }

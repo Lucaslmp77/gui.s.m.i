@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
 @idUser = 81635b84-64d2-4f9a-98a8-4bb3ebb9d04f
-@emailUser = deregues@gmail.com
+@emailUser = lucas.lmp77@gmail.com
 @idCharacter = 9beeca76-6c1f-4c8a-bbcf-794c68514fc0
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 {
     "email": "lucas.lmp77@gmail.com",
-    "otp": "9149"
+    "otp": "8140"
 }
 
 ###
@@ -78,8 +78,8 @@ POST {{baseUrl}}/api/sessions
 Content-Type: application/json
 
 {
-    "email": "deregues@gmail.com",
-    "password": "deregues"
+    "email": "lucas.lmp77@gmail.com",
+    "password": "lucas"
 }
 
 ### character

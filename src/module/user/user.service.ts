@@ -1,11 +1,12 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Inject, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UserDTO } from "./user.dto";
 import { hash } from "bcryptjs";
+import { OtpService } from "../otp/otp.service";
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService, private otpService: OtpService) { }
 
   async create(data: UserDTO) {
     const UserWithSameEmail = await this.prisma.user.findUnique({
@@ -26,9 +27,10 @@ export class UserService {
         name: data.name,
         email: data.email,
         password: hashedPassword,
-        verified: false
       },
     });
+
+    await this.otpService.sendVerificationOtpEmail(data.email);
   }
 
   async findUserByEmail(email: string) {
@@ -36,4 +38,5 @@ export class UserService {
       where: { email: email },
     });
   }
+
 }
