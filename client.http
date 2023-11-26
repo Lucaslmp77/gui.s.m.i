@@ -14,9 +14,9 @@ POST {{baseUrl}}/api/accounts
 Content-Type: application/json
 
 {
-    "name": "deregues",
-    "email": "deregues@gmail.com",
-    "password": "deregues"
+    "name": "lucas",
+    "email": "lucas.lmp77@gmail.com",
+    "password": "lucas"
 }
 
 ### otp
@@ -30,6 +30,27 @@ Content-Type: application/json
     "subject": "Verificação de email",
     "message": "Verifique seu email com o seguinte código",
     "duration": 1
+}
+
+###
+
+# @name verify_otp
+POST {{baseUrl}}/api/otp/verify
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com",
+    "otp": "6221"
+}
+
+###
+
+# @name verification_otp_email
+POST {{baseUrl}}/api/otp/verify-email
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com"
 }
 
 ###

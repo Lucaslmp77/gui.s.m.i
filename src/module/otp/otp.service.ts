@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { OtpDTO } from "./otp.dto";
 const nodemailer = require("nodemailer");
 
@@ -94,6 +94,78 @@ export class OtpService {
                     expiresAt: new Date(Date.now() + 3600000 * data.duration).toISOString(),
                 }
             });
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async verifyOtp(email: string, otp: string) {
+        try {
+            if (!(email && otp)) {
+                throw Error("Provide values for email, otp");
+            }
+
+            //ensure otp record existis
+            const matchedOtpRecord = await this.prisma.otp.findUnique({
+                where: {
+                    email: email,
+                }
+            });
+
+            if (!matchedOtpRecord) {
+                throw Error("No otp records found");
+            }
+
+            const { expiresAt } = matchedOtpRecord;
+
+            //checking for expired code
+            if (expiresAt.getTime() < Date.now()) {
+                throw Error("Code has expired. Request for a new one")
+            }
+
+            //not expired yet, verify value
+            const hashedOtp = matchedOtpRecord.otp;
+            return await compare(otp, hashedOtp);
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteOtp(email: string) {
+        try {
+            return this.prisma.otp.delete({
+                where: {
+                    email: email,
+                }
+            });
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async sendVerificationOtpEmail(email: string) {
+        try {
+            const existingUser = await this.prisma.user.findUnique({
+                where: {
+                    email: email,
+                }
+            });
+
+            if(!existingUser) {
+                throw Error("Theres no account for the provided email")
+            }
+
+            const otpDetails: OtpDTO = {
+                email,
+                subject: "Verificação de email",
+                message: "Verifique seu email com o seguinte código",
+                duration: 1,
+            }
+
+            return await this.sendOtp(otpDetails);
 
         } catch (error) {
             throw error;

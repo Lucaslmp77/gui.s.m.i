@@ -9,14 +9,19 @@ export class OtpController {
     @Post()
     @HttpCode(201)
     async create(@Body() otpData: OtpDTO) {
-        try {
-            return this.otpService.sendOtp(otpData);
-        } catch (error) {
-            console.error(error);
-            throw new InternalServerErrorException("Internal server error");
-        }
+        return this.otpService.sendOtp(otpData);
     }
 
+    @Post("/verify")
+    @HttpCode(200)
+    async verifyOtp(@Body() body: { email: string; otp: string }) {
+        return this.otpService.verifyOtp(body.email, body.otp);
+    }
 
+    @Post("/verify-email")
+    @HttpCode(200)
+    async sendVerificationOtpEmail(@Body() body: { email: string }) {
+        return this.otpService.sendVerificationOtpEmail(body.email);
+    }
 
 }
