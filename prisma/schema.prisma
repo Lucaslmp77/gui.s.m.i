@@ -12,10 +12,22 @@ model User {
   name           String
   email          String    @unique
   password       String
+  verified       Boolean
+
   texts          Text[]
   characters     Character[]
-  rpgGames       RpgGame[]
+  rpgGames       RpgGame[] 
+
   @@map("users")
+}
+
+model Otp {
+  email          String    @unique
+  otp            String
+  createdAt      DateTime
+  expiresAt      DateTime
+
+  @@map("otps")
 }
 
 model Character {
@@ -69,6 +81,7 @@ model RpgGame {
   permissions Permission[]
   texts      Text[]
   players    Player[]
+
   userId     String    @map("user_id")
   user       User      @relation(fields: [userId], references: [id])
 
@@ -80,8 +93,10 @@ model Player {
   id String @id @default(uuid())
   idPlayer String
   namePlayer String
+
   rpgGameId String @map("rpg_game_id")
   rpgGame RpgGame @relation(fields: [rpgGameId], references: [id])
+
   @@map("players")
 }
 
@@ -91,9 +106,12 @@ model Text {
   text String
   author String
   dateH DateTime
+
   userId String @map("user_id")
   user User @relation(fields: [userId], references: [id])
+  
   rpgGameId String @map("rpg_game_id")
   rpgGame RpgGame @relation(fields: [rpgGameId], references: [id])
+
   @@map("texts")
 }

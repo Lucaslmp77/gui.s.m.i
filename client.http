@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
 @idUser = 81635b84-64d2-4f9a-98a8-4bb3ebb9d04f
-@emailUser = lucas@gmail.com
+@emailUser = deregues@gmail.com
 @idCharacter = 9beeca76-6c1f-4c8a-bbcf-794c68514fc0
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
@@ -16,7 +16,20 @@ Content-Type: application/json
 {
     "name": "deregues",
     "email": "deregues@gmail.com",
-    "password": "123456"
+    "password": "deregues"
+}
+
+### otp
+
+# @name create_otp
+POST {{baseUrl}}/api/otp
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com",
+    "subject": "Verificação de email",
+    "message": "Verifique seu email com o seguinte código",
+    "duration": 1
 }
 
 ###
@@ -34,7 +47,7 @@ Content-Type: application/json
 
 {
     "email": "deregues@gmail.com",
-    "password": "123456"
+    "password": "deregues"
 }
 
 ### character
@@ -45,13 +58,13 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "name": "Mãos leves",
-    "race": "Carioca",
-    "group": "Clérigo",
+    "name": "Nome persona",
+    "race": "Elfo",
+    "group": "Arqueiro",
     "level": 7,
-    "attributes": "8tão",
+    "attributes": "Nenhum",
     "abilities": "Nenhuma",
-    "npc": true
+    "npc": false
 }
 
 ###

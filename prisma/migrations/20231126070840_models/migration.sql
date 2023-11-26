@@ -4,8 +4,17 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "verified" BOOLEAN NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "otps" (
+    "email" TEXT NOT NULL,
+    "otp" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -55,6 +64,16 @@ CREATE TABLE "rpg_games" (
 );
 
 -- CreateTable
+CREATE TABLE "players" (
+    "id" TEXT NOT NULL,
+    "idPlayer" TEXT NOT NULL,
+    "namePlayer" TEXT NOT NULL,
+    "rpg_game_id" TEXT NOT NULL,
+
+    CONSTRAINT "players_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "texts" (
     "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
@@ -68,6 +87,9 @@ CREATE TABLE "texts" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "otps_email_key" ON "otps"("email");
 
 -- AddForeignKey
 ALTER TABLE "characters" ADD CONSTRAINT "characters_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -83,6 +105,9 @@ ALTER TABLE "permissions" ADD CONSTRAINT "permissions_rpg_game_id_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "rpg_games" ADD CONSTRAINT "rpg_games_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "players" ADD CONSTRAINT "players_rpg_game_id_fkey" FOREIGN KEY ("rpg_game_id") REFERENCES "rpg_games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "texts" ADD CONSTRAINT "texts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

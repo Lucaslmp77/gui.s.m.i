@@ -10,6 +10,7 @@ import { GameRuleModule } from "./module/game-rule/game-rule.module";
 import { PermissionModule } from "./module/permission/permission.module";
 import {GatewayModule} from "./gateway/gateway.module";
 import { TextModule } from './text/text.module';
+import { OtpModule } from "./module/otp/otp.module";
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { TextModule } from './text/text.module';
     GameRuleModule,
     PermissionModule,
     GatewayModule,
-    TextModule
+    TextModule,
+    OtpModule
   ],
   controllers: [],
   providers: [],
