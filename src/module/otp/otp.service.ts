@@ -154,7 +154,7 @@ export class OtpService {
                 }
             });
 
-            if(!existingUser) {
+            if (!existingUser) {
                 throw Error("Theres no account for the provided email")
             }
 
@@ -166,6 +166,25 @@ export class OtpService {
             }
 
             return await this.sendOtp(otpDetails);
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async verifyUserEmail(email: string, otp: string) {
+        try {
+
+            if (!(email && otp)) {
+                throw Error("Empty otp details are not allowed");
+            }
+
+            const validOtp = await this.verifyOtp(email, otp);
+            if (!validOtp) {
+                throw Error("Invalid code passed. Check your inbox")
+            }
+
+            return await this.deleteOtp(email);
 
         } catch (error) {
             throw error;

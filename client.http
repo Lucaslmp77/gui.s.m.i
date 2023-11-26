@@ -46,11 +46,22 @@ Content-Type: application/json
 ###
 
 # @name verification_otp_email
-POST {{baseUrl}}/api/otp/verify-email
+POST {{baseUrl}}/api/otp/email-verification
 Content-Type: application/json
 
 {
     "email": "lucas.lmp77@gmail.com"
+}
+
+###
+
+# @name verification_user_email
+POST {{baseUrl}}/api/otp/email-verification/verify
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com",
+    "otp": "9149"
 }
 
 ###

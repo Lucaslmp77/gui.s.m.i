@@ -18,10 +18,16 @@ export class OtpController {
         return this.otpService.verifyOtp(body.email, body.otp);
     }
 
-    @Post("/verify-email")
+    @Post("/email-verification")
     @HttpCode(200)
     async sendVerificationOtpEmail(@Body() body: { email: string }) {
         return this.otpService.sendVerificationOtpEmail(body.email);
+    }
+
+    @Post("/email-verification/verify")
+    @HttpCode(200)
+    async verifyUserEmail(@Body() body: { email: string, otp: string }) {
+        return this.otpService.verifyUserEmail(body.email, body.otp);
     }
 
 }
