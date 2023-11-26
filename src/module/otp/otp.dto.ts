@@ -5,5 +5,5 @@ export type OtpDTO = {
     expiresAt: string;
     subject?: string;
     message?: string;
-    duration?: number;
+    duration: number;
 };

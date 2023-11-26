@@ -10,12 +10,13 @@ export class OtpController {
     @HttpCode(201)
     async create(@Body() otpData: OtpDTO) {
         try {
-            const { email, subject, message, duration } = otpData;
-            return this.otpService.sendOtp(email, subject, message, duration, otpData);
+            return this.otpService.sendOtp(otpData);
         } catch (error) {
             console.error(error);
             throw new InternalServerErrorException("Internal server error");
         }
     }
-}
 
+
+
+}

@@ -45,10 +45,10 @@ export class OtpService {
     }
 
 
-    async sendOtp(email, subject, message, duration = 1, data: OtpDTO) {
+    async sendOtp(data: OtpDTO) {
         const { AUTH_EMAIL } = process.env;
         try {
-            if (!(email && subject && message)) {
+            if (!(data.email && data.subject && data.message)) {
                 throw Error("Provide values for email, subject, message")
             }
 
@@ -73,10 +73,10 @@ export class OtpService {
             //send email
             const mailOptions = {
                 from: AUTH_EMAIL,
-                to: email,
-                subject,
-                html: `<p>${message}</p><p style="color:tomato;font-size:25px;letter-spacing:2px;">
-                <b>${generateOtp}</b></p><p>This code <b>expires in ${duration} minute(s)</b>.</p>`,
+                to: data.email,
+                subject: data.subject,
+                html: `<p>${data.message}</p><p style="color:tomato;font-size:25px;letter-spacing:2px;">
+                <b>${generateOtp}</b></p><p>This code <b>expires in ${data.duration} minute(s)</b>.</p>`,
             }
 
             await this.sendEmail(mailOptions);
@@ -91,7 +91,7 @@ export class OtpService {
                     email: data.email,
                     otp: hashedOtp,
                     createdAt: createdAt,
-                    expiresAt: new Date(Date.now() + 3600000 * duration).toISOString(), // Também corrigi a formatação aqui
+                    expiresAt: new Date(Date.now() + 3600000 * data.duration).toISOString(),
                 }
             });
 
