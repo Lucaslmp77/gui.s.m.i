@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
 @idUser = 81635b84-64d2-4f9a-98a8-4bb3ebb9d04f
-@emailUser = lucas@gmail.com
+@emailUser = lucas.lmp77@gmail.com
 @idCharacter = 9beeca76-6c1f-4c8a-bbcf-794c68514fc0
 @gameRuleId = 461a1a7e-2efd-4068-ba55-95882002b7df
 @permissionId = 5c6606cb-4d35-4b89-9f3e-556e6759da6c
@@ -14,9 +14,54 @@ POST {{baseUrl}}/api/accounts
 Content-Type: application/json
 
 {
-    "name": "deregues",
-    "email": "deregues@gmail.com",
-    "password": "123456"
+    "name": "lucas",
+    "email": "lucas.lmp77@gmail.com",
+    "password": "lucas"
+}
+
+### otp
+
+# @name create_otp
+POST {{baseUrl}}/api/otp
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com",
+    "subject": "Verificação de email",
+    "message": "Verifique seu email com o seguinte código",
+    "duration": 1
+}
+
+###
+
+# @name verify_otp
+POST {{baseUrl}}/api/otp/verify
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com",
+    "otp": "6221"
+}
+
+###
+
+# @name verification_otp_email
+POST {{baseUrl}}/api/otp/email-verification
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com"
+}
+
+###
+
+# @name verification_user_email
+POST {{baseUrl}}/api/otp/email-verification/verify/{{emailUser}}
+Content-Type: application/json
+
+{
+    "email": "lucas.lmp77@gmail.com",
+    "otp": "3340"
 }
 
 ###
@@ -28,13 +73,20 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+# @name delete_user
+DELETE {{baseUrl}}/api/accounts/{{emailUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 # @name authenticate
 POST {{baseUrl}}/api/sessions
 Content-Type: application/json
 
 {
-    "email": "deregues@gmail.com",
-    "password": "123456"
+    "email": "lucas.lmp77@gmail.com",
+    "password": "lucas"
 }
 
 ### character
@@ -45,13 +97,13 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "name": "Mãos leves",
-    "race": "Carioca",
-    "group": "Clérigo",
+    "name": "Nome persona",
+    "race": "Elfo",
+    "group": "Arqueiro",
     "level": 7,
-    "attributes": "8tão",
+    "attributes": "Nenhum",
     "abilities": "Nenhuma",
-    "npc": true
+    "npc": false
 }
 
 ###

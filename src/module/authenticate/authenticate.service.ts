@@ -18,6 +18,10 @@ export class AuthenticateService {
       },
     });
 
+    if(!user?.verified) {
+      throw Error("Usuário com o email não verificado");
+    }
+
     if (!user) {
       throw new UnauthorizedException(
         "A credencial do usuário não corresponde.",
