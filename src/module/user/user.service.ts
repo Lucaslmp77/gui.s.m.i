@@ -39,4 +39,12 @@ export class UserService {
     });
   }
 
+  async delete(email: string) {
+    return await this.prisma.user.delete({
+      where: {
+        email: email
+      }
+    });
+  }
+
 }

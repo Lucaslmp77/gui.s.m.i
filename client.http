@@ -73,6 +73,13 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+# @name delete_user
+DELETE {{baseUrl}}/api/accounts/{{emailUser}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 # @name authenticate
 POST {{baseUrl}}/api/sessions
 Content-Type: application/json
