@@ -1,8 +1,7 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { compare, hash } from "bcryptjs";
 import { OtpDTO } from "./otp.dto";
-import { UserService } from "../user/user.service";
 const nodemailer = require("nodemailer");
 
 @Injectable()
@@ -53,7 +52,6 @@ export class OtpService {
                 throw Error("Provide values for email, subject, message")
             }
 
-            // Clear any old record
             const existingOtpRecord = await this.prisma.otp.findUnique({
                 where: {
                     email: data.email,
@@ -68,21 +66,18 @@ export class OtpService {
                 });
             }
 
-            //generate pin
             const generateOtp = await this.generateOtp();
 
-            //send email
             const mailOptions = {
                 from: AUTH_EMAIL,
                 to: data.email,
                 subject: data.subject,
                 html: `<p>${data.message}</p><p style="color:tomato;font-size:25px;letter-spacing:2px;">
-                <b>${generateOtp}</b></p><p>This code <b>expires in ${data.duration} minute(s)</b>.</p>`,
+                <b>${generateOtp}</b></p><p>Esse código <b>expira em ${data.duration} minuto(s)</b>.</p>`,
             }
 
             await this.sendEmail(mailOptions);
 
-            //save otp record
             const hashedOtp = await hash(generateOtp, 8);
 
             const createdAt = new Date().toISOString();
@@ -92,7 +87,7 @@ export class OtpService {
                     email: data.email,
                     otp: hashedOtp,
                     createdAt: createdAt,
-                    expiresAt: new Date(Date.now() + 3600000 * data.duration).toISOString(),
+                    expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
                 }
             });
 
@@ -107,7 +102,6 @@ export class OtpService {
                 throw Error("Provide values for email, otp");
             }
 
-            //ensure otp record existis
             const matchedOtpRecord = await this.prisma.otp.findUnique({
                 where: {
                     email: email,
@@ -120,12 +114,10 @@ export class OtpService {
 
             const { expiresAt } = matchedOtpRecord;
 
-            //checking for expired code
             if (expiresAt.getTime() < Date.now()) {
                 throw Error("Code has expired. Request for a new one")
             }
 
-            //not expired yet, verify value
             const hashedOtp = matchedOtpRecord.otp;
             return await compare(otp, hashedOtp);
 
@@ -163,7 +155,7 @@ export class OtpService {
                 email,
                 subject: "Verificação de email",
                 message: "Verifique seu email com o seguinte código",
-                duration: 1,
+                duration: 5,
             }
 
             return await this.sendOtp(otpDetails);
